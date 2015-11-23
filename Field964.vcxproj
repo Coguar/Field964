@@ -89,7 +89,7 @@
       <PreprocessorDefinitions>SFML_DYNAMIC;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>C:\Users\Степан\Documents\Visual Studio 2015\SFML\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <CompileAs>Default</CompileAs>
+      <CompileAs>CompileAsCpp</CompileAs>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -168,9 +168,11 @@ copy "C:\Users\Степан\Documents\Visual Studio 2015\SFML\bin\sfml-audio-2.d
     <ClInclude Include="..\TinyXML\tinystr.h" />
     <ClInclude Include="..\TinyXML\tinyxml.h" />
     <ClInclude Include="cam.h" />
+    <ClInclude Include="Classes.h" />
     <ClInclude Include="control.h" />
     <ClInclude Include="distantion.h" />
     <ClInclude Include="drawMap.h" />
+    <ClInclude Include="GamesStruct.h" />
     <ClInclude Include="Game_window.h" />
     <ClInclude Include="GoToTarget.h" />
     <ClInclude Include="health.h" />
