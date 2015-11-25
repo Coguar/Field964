@@ -10,15 +10,16 @@ public:
 	float dx, dy, x, y, speed, moveTimer;
 	int w, h, health;
 	bool life;
-	sf:: Texture texture;
-	sf::Sprite sprite;
+	sf:: Texture* texture = new Texture;
+	sf::Sprite* sprite = new Sprite;
 	sf::String name;
-	Entity(sf::Image &image, sf::String Name, float X, float Y, int W, int H) {
+	Entity(sf::Image & image, sf::String Name, float X, float Y, int W, int H) {
 		x = X; y = Y; w = W; h = H; name = Name; moveTimer = 0;
 		speed = 0; health = 100; dx = 0; dy = 0;
 		life = true;
-		texture.loadFromImage(image);
-		sprite.setTexture(texture);
+		texture->loadFromImage(image);
+		sprite->setTexture(*texture);
+		std::cout << "Very nice";
 		//sprite.setOrigin(w / 2, h / 2);
 	}
 
@@ -43,11 +44,11 @@ public:
 			File = F;//им€ файла+расширение
 			w = W; h = H;//высота и ширина
 			image.loadFromFile(File);//запихиваем в image наше изображение вместо File мы передадим то, что пропишем при создании объекта. ¬ нашем случае "hero.png" и получитс€ запись идентична€ 	image.loadFromFile("images/hero/png");
-			texture.loadFromImage(image);
-			sprite.setTexture(texture);
+			texture->loadFromImage(image);
+			sprite->setTexture(*texture);
 			x = X; y = Y;
-			sprite.setTextureRect(IntRect(13, 9, w, h));
-			sprite.setPosition(x, y);
+			sprite->setTextureRect(IntRect(13, 9, w, h));
+			sprite->setPosition(x, y);
 		}
 	}
 	void update(float time) {
@@ -67,7 +68,7 @@ public:
 			case 1: dy = -speed;  break;
 			case 2: dy = 0;  break;
 			}
-			spriteposition(sprite, Xdir, Ydir, time);
+			spriteposition(*sprite, Xdir, Ydir, time);
 			x1 += dx * time;
 			if (map_event(y, x1) == false && player_contact == false) {
 				x = x1;
@@ -78,13 +79,13 @@ public:
 			}
 
 			if (player_contact == true) {
-				sprite.setColor(Color::Red);
+				sprite->setColor(Color::Red);
 			}
 			else {
-				sprite.setColor(Color::White);
+				sprite->setColor(Color::White);
 			}
 
-			sprite.setPosition(x, y);
+			sprite->setPosition(x, y);
 		}
 	}
 
@@ -134,10 +135,10 @@ public:
 		File = F;//им€ файла+расширение
 		w = W; h = H;//высота и ширина
 		image.loadFromFile(File);//запихиваем в image наше изображение вместо File мы передадим то, что пропишем при создании объекта. ¬ нашем случае "hero.png" и получитс€ запись идентична€ 	image.loadFromFile("images/hero/png");
-		texture.loadFromImage(image);//закидываем наше изображение в текстуру
-		sprite.setTexture(texture);//заливаем спрайт текстурой
+		texture->loadFromImage(image);//закидываем наше изображение в текстуру
+		sprite->setTexture(*texture);//заливаем спрайт текстурой
 		x = X; y = Y;//координата по€влени€ спрайта
-		sprite.setTextureRect(IntRect(13, 9, w, h));  //«адаем спрайту один пр€моугольник дл€ вывода одного льва, а не кучи львов сразу. IntRect - приведение типов
+		sprite->setTextureRect(IntRect(13, 9, w, h));  //«адаем спрайту один пр€моугольник дл€ вывода одного льва, а не кучи львов сразу. IntRect - приведение типов
 	}
 
 	void update(float time) {
@@ -169,10 +170,10 @@ public:
 		}
 
 		if (life == false) {
-			sprite.setTextureRect(IntRect(392, 11, w, h));
+			sprite->setTextureRect(IntRect(392, 11, w, h));
 			health = 0;
 		}
-		sprite.setPosition(x, y - 15);
+		sprite->setPosition(x, y - 15);
 
 	}
 
@@ -206,18 +207,30 @@ public:
 	}
 };
 
-class Bullet :public Entity {//класс пули
+class Bullet {//класс пули
 public:
+	std::vector<Object> obj;
 	int direction;//направление пули
+	float dx, dy, x, y, speed, moveTimer;
+	int w, h, health;
+	bool life;
+	sf::Texture* texture = new Texture;
+	sf::Sprite* sprite = new Sprite;
+	sf::String name;
 	Image image;
-	Bullet(String F, String Name, Level &lvl, float X, float Y, int W, int H, int dir) :Entity(image, Name, X, Y, W, H) {//всЄ так же, только вз€ли в конце состо€ние игрока (int dir)
+	Bullet(String F, String Name, Level &lvl, float X, float Y, int W, int H, int dir) {
 		image.loadFromFile(F);
+		std::cout << "nice";
+		life = true;
+		texture->loadFromImage(image);
+		sprite->setTexture(*texture);
+
 		obj = lvl.GetObjects("solid");//инициализируем .получаем нужные объекты дл€ взаимодействи€ пули с картой
 		x = X;
 		y = Y;
 		direction = dir;
 		speed = 0.3;
-		w = h = 16;
+		w = h = 5;
 		life = true;
 		//выше инициализаци€ в конструкторе
 	}
@@ -250,42 +263,10 @@ public:
 			}
 		}
 
-		sprite.setPosition(x + w / 2, y + h / 2);//задаетс€ позицию пуле
+		sprite->setPosition(x + w / 2, y + h / 2);//задаетс€ позицию пуле
 	}
 
 	FloatRect getRect() {
 		return FloatRect(x, y, h, w);
 	}
-};
-
-struct Game {
-	RenderWindow* window;
-	Clock clock;
-	Clock reload_clock;
-
-
-	std::list<Enemy*>  entities;//создаю список, сюда буду кидать объекты.например врагов.
-	std::list<Enemy*>::iterator & it;//итератор чтобы проходить по эл-там списка
-
-	std::list<Bullet*> bullets;
-	std::list<Bullet*>::iterator& bull;
-	Font  font;
-	Text  text;
-	Level  lvl;
-	Image  BulletImage;
-	Music  music;
-
-	Object  player1;
-	Object  player2;
-	Object  normal_enemy;
-
-	Player  human;
-	Player  human1;
-
-	float CurrentFrame = 0;
-	float CurrentFrame1 = 0;
-	float res = 0;
-
-	bool hit;
-
 };

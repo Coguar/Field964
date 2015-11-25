@@ -7,21 +7,19 @@
 #include <list>
 
 
-
-
-
-
 struct Config {
 	std::string imageHeroMage = "./files/img/heroMage.png";
 	std::string imageHeroWarrior = "./files/img/heroWar.png";
 	std::string NormalEnemy = "./files/img/EnemyNormal.png";
-	std::string Bullet = "./files/img/bullet.png";
+	std::string Bullet = "ball1.png";
 	std::string fon_music = "./files/music/fon.ogg";
-	std::string map = "./files/maps/map.tmp";
+	std::string map = "./files/maps/newMap.tmx";
 	std::string font = "./files/fonts/CyrilicOld.ttf";
 };
 
-struct Game
+struct Level;
+
+struct Game1 //структура в GameStruct
 {
 	sf::RenderWindow *window;
 	sf::View *view1;
@@ -34,16 +32,24 @@ struct Game
 struct Hero 
 {
 	Player* player;
-	Object player_obj;
+	Object player_obj = Object();
 	std::string name = "Player1";
 	float H = 35.0;
 	float W = 25.0;
 	int health = 150;
 };
 
+struct Shoot {
+	Bullet * bullet;
+	float H = 5;
+	float W = 5;
+};
+
 struct Monster
 {
-	Enemy *normal;
+	Enemy* normal;
+	Object monster_obj= Object();
+	std::vector<Object> e;
 	float normal_H = 35.0;
 	float normal_W = 25.0;
 	int normal_health = 150;

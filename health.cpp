@@ -9,6 +9,6 @@ void ShowHealth(RenderWindow & window, Text & text, int & health_value, View & v
 	std::ostringstream playerHealthString;    // объявили переменную
 	playerHealthString << health_value;		//занесли в нее число здоровья, то есть формируем строку
 	text.setString("Здоровье:" + playerHealthString.str());//задаем строку тексту и вызываем сформированную выше строку методом .str() 
-	text.setPosition(view.getCenter().x - 256, view.getCenter().y - 256);//задаем позицию текста, отступая от центра камеры
+	text.setPosition(view.getCenter().x - view.getSize().x / 2, view.getCenter().y - view.getSize().y / 2);//задаем позицию текста, отступая от центра камеры
 	window.draw(text);//рисую этот тексn
 }
