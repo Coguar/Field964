@@ -69,6 +69,12 @@
     <ClInclude Include="GamesStruct.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="randomValue.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="gameEvent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -106,6 +112,15 @@
     </ClCompile>
     <ClCompile Include="..\TinyXML\tinyxmlparser.cpp">
       <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="getbonus.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="randomValue.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="gameEvent.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

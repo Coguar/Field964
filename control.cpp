@@ -8,61 +8,61 @@ void controlPlayer(Sprite & sprite, int & dir, float & speed, float & time, enum
 {
 	if (Keyboard::isKeyPressed(go_left))
 	{
-		dir = 1; speed = 1;
-		CurrentFrame += 0.04 * time;
+		dir = 1; speed = 1.5;
+		/*CurrentFrame += 0.04 * time;
 		if (CurrentFrame > 4) CurrentFrame -= 4;
-		sprite.setTextureRect(IntRect(310, (9 + 49 * int(CurrentFrame)), w, 35));
+		sprite.setTextureRect(IntRect(310, (9 + 49 * int(CurrentFrame)), w, 35));*/
 	}
 	if (Keyboard::isKeyPressed(go_right))
 	{
-		dir = 0; speed = 1;
-		CurrentFrame += 0.04 * time;
+		dir = 0; speed = 1.5;
+		/*CurrentFrame += 0.04 * time;
 		if (CurrentFrame > 4) CurrentFrame -= 4;
-		sprite.setTextureRect(IntRect(111, (9 + 49 * int(CurrentFrame)), w, 35));
+		sprite.setTextureRect(IntRect(111, (9 + 49 * int(CurrentFrame)), w, 35));*/
 
 	}
 	if (Keyboard::isKeyPressed(go_up))
 	{
-		dir = 3; speed = 1;
-		sprite.setTextureRect(IntRect(13, 7, 25, 35));
+		dir = 3; speed = 1.5;
+		/*sprite.setTextureRect(IntRect(13, 7, 25, 35));
 		CurrentFrame += 0.04 * time;
 		if (CurrentFrame > 4) CurrentFrame -= 4;
-		sprite.setTextureRect(IntRect(13, (9 + 49 * int(CurrentFrame)), w, 35));
+		sprite.setTextureRect(IntRect(13, (9 + 49 * int(CurrentFrame)), w, 35));*/
 		if (Keyboard::isKeyPressed(go_left))
 		{
-			dir = 6; speed = 1;
-			CurrentFrame1 += 0.04 * time;
+			dir = 6; speed = 1.5;
+			/*CurrentFrame1 += 0.04 * time;
 			if (CurrentFrame1 > 4) CurrentFrame1 -= 4;
-			sprite.setTextureRect(IntRect(356, 10 + 49 * int(CurrentFrame1), w, 35));
+			sprite.setTextureRect(IntRect(356, 10 + 49 * int(CurrentFrame1), w, 35));*/
 		}
 		if (Keyboard::isKeyPressed(go_right))
 		{
-			dir = 5; speed = 1;
-			CurrentFrame1 += 0.04 * time;
+			dir = 5; speed = 1.5;
+			/*CurrentFrame1 += 0.04 * time;
 			if (CurrentFrame1 > 4) CurrentFrame1 -= 4;
-			sprite.setTextureRect(IntRect(62, 10 + 49 * int(CurrentFrame1), w, 35));
+			sprite.setTextureRect(IntRect(62, 10 + 49 * int(CurrentFrame1), w, 35));*/
 		}
 	}
 	if (Keyboard::isKeyPressed(go_down))
 	{
-		dir = 2; speed = 1;
-		sprite.setTextureRect(IntRect(13, 7, w, 35));
-		CurrentFrame += 0.04 * time;
+		dir = 2; speed = 1.5;
+		//sprite.setTextureRect(IntRect(13, 7, w, 35));
+		/*CurrentFrame += 0.04 * time;
 		if (CurrentFrame > 4) CurrentFrame -= 4;
-		sprite.setTextureRect(IntRect(209, (8 + 49 * int(CurrentFrame)), w, 35));
+		sprite.setTextureRect(IntRect(209, (8 + 49 * int(CurrentFrame)), w, 35));*/
 		if (Keyboard::isKeyPressed(go_left))
 		{
-			dir = 7; speed = 1;
-			CurrentFrame1 += 0.04 * time;
+			dir = 7; speed = 1.5;
+			/*CurrentFrame1 += 0.04 * time;
 			if (CurrentFrame1 > 4) CurrentFrame1 -= 4;
-			sprite.setTextureRect(IntRect(261, 13 + 49 * int(CurrentFrame1), w, 35));
+			sprite.setTextureRect(IntRect(261, 13 + 49 * int(CurrentFrame1), w, 35));*/
 		}
 		if (Keyboard::isKeyPressed(go_right))
 		{
-			dir = 4; speed = 1;
-			CurrentFrame1 += 0.04 * time;
+			dir = 4; speed = 1.5;
+			/*CurrentFrame1 += 0.04 * time;
 			if (CurrentFrame1 > 4) CurrentFrame1 -= 4;
-			sprite.setTextureRect(IntRect(157, 14 + 49 * int(CurrentFrame1), w, 35));
+			sprite.setTextureRect(IntRect(157, 14 + 49 * int(CurrentFrame1), w, 35));*/
 		}
 	}
 }

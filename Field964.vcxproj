@@ -88,13 +88,13 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>SFML_DYNAMIC;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>C:\Users\Степан\Documents\Visual Studio 2015\SFML\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\Степан\Documents\SFML-Visual_Studio2015RCx32\include;C:\Users\Степан\Documents\Visual Studio 2015\SFML\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <CompileAs>CompileAsCpp</CompileAs>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>C:\Users\Степан\Documents\Visual Studio 2015\SFML\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:\Users\Степан\Documents\SFML-Visual_Studio2015RCx32\lib;C:\Users\Степан\Documents\Visual Studio 2015\SFML\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>sfml-graphics-d.lib;sfml-audio-d.lib;sfml-window-d.lib;sfml-system-d.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PreLinkEvent>
@@ -126,7 +126,7 @@ copy "C:\Users\Степан\Documents\Visual Studio 2015\SFML\bin\sfml-audio-d-2
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>C:\Users\Степан\Documents\Visual Studio 2015\SFML\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\Степан\Documents\SFML-Visual_Studio2015RCx32\include;C:\Users\Степан\Documents\Visual Studio 2015\SFML\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <CompileAs>Default</CompileAs>
     </ClCompile>
     <Link>
@@ -134,7 +134,7 @@ copy "C:\Users\Степан\Documents\Visual Studio 2015\SFML\bin\sfml-audio-d-2
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>C:\Users\Степан\Documents\Visual Studio 2015\SFML\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:\Users\Степан\Documents\SFML-Visual_Studio2015RCx32\lib;C:\Users\Степан\Documents\Visual Studio 2015\SFML\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>sfml-main.lib;sfml-audio.lib;sfml-graphics.lib;sfml-window.lib;sfml-system.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PreLinkEvent>
@@ -172,6 +172,7 @@ copy "C:\Users\Степан\Documents\Visual Studio 2015\SFML\bin\sfml-audio-2.d
     <ClInclude Include="control.h" />
     <ClInclude Include="distantion.h" />
     <ClInclude Include="drawMap.h" />
+    <ClInclude Include="gameEvent.h" />
     <ClInclude Include="GamesStruct.h" />
     <ClInclude Include="Game_window.h" />
     <ClInclude Include="GoToTarget.h" />
@@ -179,6 +180,7 @@ copy "C:\Users\Степан\Documents\Visual Studio 2015\SFML\bin\sfml-audio-2.d
     <ClInclude Include="level.h" />
     <ClInclude Include="level.hpp" />
     <ClInclude Include="map.h" />
+    <ClInclude Include="randomValue.h" />
     <ClInclude Include="sprite_position.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
@@ -192,8 +194,11 @@ copy "C:\Users\Степан\Documents\Visual Studio 2015\SFML\bin\sfml-audio-2.d
     <ClCompile Include="distantion.cpp" />
     <ClCompile Include="drawMap.cpp" />
     <ClCompile Include="Field964.cpp" />
+    <ClCompile Include="gameEvent.cpp" />
+    <ClCompile Include="getbonus.cpp" />
     <ClCompile Include="GoToTarget.cpp" />
     <ClCompile Include="health.cpp" />
+    <ClCompile Include="randomValue.cpp" />
     <ClCompile Include="sprite_position.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
