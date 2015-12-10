@@ -57,12 +57,6 @@
     <ClInclude Include="..\TinyXML\tinyxml.h">
       <Filter>Resource Files</Filter>
     </ClInclude>
-    <ClInclude Include="level.h">
-      <Filter>Resource Files</Filter>
-    </ClInclude>
-    <ClInclude Include="level.hpp">
-      <Filter>Resource Files</Filter>
-    </ClInclude>
     <ClInclude Include="Classes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -73,6 +67,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="gameEvent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="level.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="action.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -120,6 +120,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="gameEvent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Level.cpp">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="action.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

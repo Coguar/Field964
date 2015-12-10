@@ -5,7 +5,7 @@
 
 using namespace sf;
 
-class Entity {
+static class Entity {
 public:
 	std::vector<Object> obj;//вектор объектов карты
 	float dx, dy, x, y, speed, moveTimer;
@@ -20,7 +20,6 @@ public:
 		life = true;
 		texture->loadFromImage(image);
 		sprite->setTexture(*texture);
-		std::cout << "Very nice";
 		sprite->setOrigin(w / 2, h / 2);
 	}
 
@@ -29,7 +28,7 @@ public:
 	}
 };
 
-class Enemy :public Entity {
+static class Enemy :public Entity {
 public:
 	FloatRect rect;
 	bool player_contact = false;
@@ -137,7 +136,7 @@ public:
 	}
 };
 
-class Player :public Entity { // класс Игрока
+static class Player :public Entity { // класс Игрока
 public:
 	FloatRect rect;
 	float x1, y1 = 0;
@@ -153,6 +152,18 @@ public:
 	bool take_uzi = false;
 	bool take_shotgun = false;
 	bool take_machinegun = false;
+
+	float damage_pistol = 10;
+	float damage_uzi = 15;
+	float damage_shotgun = 5;
+	float damage_machinegun = 20;
+	float bonus_damage = 0;
+
+	int ammo_uzi = 25;
+	int ammo_shootgun = 8;
+	int ammo_machinegun = 100;
+	int ammo = 0;
+
 	int choose_gun = 1;
 
 	Player(String F, String Name, Level &lev, float X, float Y, float W, float H, int health_point) :Entity(image, Name, X, Y, W, H) {  //Конструктор с параметрами(формальными) для класса Player. При создании объекта класса мы будем задавать имя файла, координату Х и У, ширину и высоту
@@ -183,19 +194,23 @@ public:
 
 		switch (weapoon) {
 		case pistol: image.loadFromFile("./files/sprites/player_pistol.png"); texture->loadFromImage(image); 
-			sprite->setTextureRect(IntRect(8, 0, 50, h)); sprite->setOrigin(w / 2, h / 2); break;
+			sprite->setTextureRect(IntRect(8, 0, 50, h)); sprite->setOrigin(w / 2, h / 2); 
+			damage = damage_pistol + bonus_damage;  ammo = -1; break;
 		case uzi: if (take_uzi == true) {
 			image.loadFromFile("./files/sprites/player_uzi.png"); texture->loadFromImage(image);
 			sprite->setTextureRect(IntRect(8, 0, 50, h)); sprite->setOrigin(w / 2, h / 2);
-		} break;
+		} 
+			damage = damage_uzi + bonus_damage; ammo = ammo_uzi;  break;
 		case shotgun:if (take_shotgun == true) {
 			image.loadFromFile("./files/sprites/player_shotgun.png"); texture->loadFromImage(image);
 			sprite->setTextureRect(IntRect(3, 0, 68, 100)); sprite->setOrigin(w / 2 + 11, 100 / 2);
-		} break;
+		} 
+			damage = damage_shotgun + bonus_damage; ammo = ammo_shootgun;  break;
 		case machinegun: if (take_machinegun == true) {
 			image.loadFromFile("./files/sprites/player_machinegun.png"); texture->loadFromImage(image);
 			sprite->setTextureRect(IntRect(3, 0, 68, 100)); sprite->setOrigin(w / 2 + 11, 100 / 2);
-		}break;
+		}
+		damage = damage_machinegun + bonus_damage; ammo = ammo_machinegun;  break;
 		}
 
 		switch (dir) {
@@ -265,7 +280,7 @@ public:
 	}
 };
 
-class Bullet {//класс пули
+static class Bullet {//класс пули
 public:
 	std::vector<Object> obj;
 	int direction;//направление пули
@@ -329,7 +344,7 @@ public:
 	}
 };
 
-class Bonus {
+static class Bonus {
 public:
 	int Name;
 	float x, y;
@@ -363,7 +378,7 @@ public:
 	}
 };
 
-class Tree {
+static class Tree {
 public:
 	int Name;
 	float x, y;

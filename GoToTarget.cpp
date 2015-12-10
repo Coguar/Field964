@@ -9,28 +9,8 @@ void gototarget(float & Xdir, float & Ydir, float aX, float aY, float bX, float 
 	
 	float distance = sqrt((aX - bX)*(aX - bX) + (aY - bY)*(aY - bY));
 
-	Xdir = (aX - bX) / distance;//идем по иксу с помощью вектора нормали
-	Ydir = (aY - bY) / distance;//идем по игреку так же
-	/*
-	if (floor(aX) - floor(bX) == 0) {
-		Xdir = 2;
-	}
-	else if (floor(aX) - floor(bX) > 0) {
-		Xdir = 0;
-	}
-	else if (floor(aX) - floor(bX) < 0) {
-		Xdir = 1;
-	}
-
-	if (floor(aY) - floor(bY) == 0) {
-		Ydir = 2;
-	}
-	else if (floor(aY) - floor(bY) > 0) {
-		Ydir = 0;
-	}
-	else if (floor(aY) - floor(bY) < 0) {
-		Ydir = 1;
-	}*/
+	Xdir = (aX - bX) / distance;
+	Ydir = (aY - bY) / distance;
 }
 
 void gototargetShot(float & Xdir, float & Ydir, float aX, float aY, float bX, float bY) {

@@ -1,8 +1,8 @@
 // Field964.cpp : Defines the entry point for the console application.
 //
 #include "stdafx.h"
-#include <SFML/Graphics.hpp>
-#include <SFML/Audio.hpp>
+//#include <SFML/Graphics.hpp>
+//#include <SFML/Audio.hpp>
 #include "map.h"
 #include "cam.h"
 #include "drawMap.h"
@@ -13,17 +13,18 @@
 #include <fstream>
 #include <string>
 #include <vector>
-#include <list>
+//#include <list>
 #include "Game_window.h"
 #include "distantion.h"
 #include "GoToTarget.h"
 #include "sprite_position.h"
-#include "global.h"
-#include "level.h"
-#include "Classes.h"
+//#include "global.h"
+//#include "level.h"
+//#include "Classes.h"
 #include "GamesStruct.h"
 #include "randomValue.h"
-//#include "gameEvent.h"
+#include "gameEvent.h"
+#include "action.h"
 
 
 using namespace sf;//включаем пространство имен sf, чтобы постоянно не писать sf::
@@ -117,52 +118,30 @@ void DrawingGame(Config & config, Game1 & game, Hero & hero, Lists & lists, Info
 	game.lvl->Draw(*game.window);
 
 	hero.player->update(time);
-	//есть
+
 	for (lists.bon = lists.bonuses.begin(); lists.bon != lists.bonuses.end();lists.bon++) {
 		game.window->draw(*(*lists.bon)->sprite);
-		/*if ((*lists.bon)->getRect().intersects(hero.player->getRect())) {
-			lists.bon = lists.bonuses.erase(lists.bon);
-			//hero.player->health += 10;
-		}
-		else {
-			lists.bon++;
-		}*/
 	}
-	//есть функция 
-	for (lists.it = lists.entities.begin(); lists.it != lists.entities.end();) {
-		(*lists.it)->update(time * game.speed_game);
-		if ((*lists.it)->life == false) {
-			if (random_number(2) + 1 == 1) {
-				lists.bonuses.push_back(new Bonus(config.bonus, random_number(3) + 1, (*lists.it)->x, (*lists.it)->y));
-			}
-			lists.it = lists.entities.erase(lists.it);
-		}
-		else{
-			game.window->draw(*(*lists.it)->sprite);
-			lists.it++;
-		}
-	}
-	//----
 
-	//есть функция
+	for (lists.it = lists.entities.begin(); lists.it != lists.entities.end(); lists.it++) {
+			game.window->draw(*(*lists.it)->sprite);
+	}
+
+
 	for (lists.bull = lists.bullets.begin(); lists.bull != lists.bullets.end(); ) {
-		(*lists.bull)->update(time * game.speed_game);
-		if ((*lists.bull)->life == false) {
-			lists.bull = lists.bullets.erase(lists.bull);
-		}
-		else {
-			game.window->draw(*(*lists.bull)->sprite);
-			lists.bull++;
-		}
+		(*lists.bull)->update(time);
+		game.window->draw(*(*lists.bull)->sprite);
+		lists.bull++;
 	}
 	game.window->draw(*hero.player->sprite);
 	for (lists.wood = lists.woods.begin(); lists.wood != lists.woods.end(); lists.wood++) {
 		game.window->draw(*(*lists.wood)->sprite);
 	}
 	ShowHealth(*game.window, *info.text, hero.player->health, *game.view1);
+	ShowAmmo(*game.window, *info.text, hero.player->ammo, *game.view1);
 	game.window->display();
 }
-//----------
+
 void StartGame(Config & config, Game1 & game, Hero & hero, Lists * lists, Info & info, Shoot & shoot, Monster & enemy)
 {
 	Clock clock;
@@ -175,46 +154,21 @@ void StartGame(Config & config, Game1 & game, Hero & hero, Lists * lists, Info &
 		time = time / 10000;
 		sf::Event event;
 
-		Vector2i pixelPos = Mouse::getPosition(*game.window);//забираем коорд курсора
-		Vector2f pos = game.window->mapPixelToCoords(pixelPos);//переводим их в игровые (уходим от коорд окна)
+		Vector2i pixelPos = Mouse::getPosition(*game.window);
+		Vector2f pos = game.window->mapPixelToCoords(pixelPos);
 
-															   // сделать функцию
-		float dX = pos.x - hero.player->x;//вектор , колинеарный прямой, которая пересекает спрайт и курсор
-		float dY = pos.y - hero.player->y;//он же, координата y
-		float rotation = (atan2(dY, dX)) * 180 / 3.14159265;//получаем угол в радианах и переводим его в градусы
-															//std::cout << rotation << "\n";//смотрим на градусы в консольке
-		hero.player->sprite->setRotation(rotation + 90);
-		//
-
+		hero.player->sprite->setRotation(actionGetRotation(pos.x, pos.y, hero.player->x, hero.player->y) + 90);
 		while (game.window->pollEvent(event)) {
 			if (event.type == sf::Event::Closed) {
 				game.window->close();
 			}
 
-			if (event.type == Event::MouseButtonPressed) {//если нажата клавиша мыши
+			if (event.type == Event::MouseButtonPressed) {
 				if (event.key.code == Mouse::Left) {
 					reload_time = reload_clock.getElapsedTime().asSeconds();
-					if (reload_time >= hero.player->reload_time) {
-						hero.player->reload = true;
-					}
-					if (hero.player->reload == true) {
-						hero.player->reload = false;
-						reload_clock.restart();
-						if (hero.player->weapoon != hero.player->shotgun) {
-							shoot.bullet = new Bullet(config.Bullet, "Bullet", *game.lvl, hero.player->x, hero.player->y, 20, 20, hero.player->dir);
-							std::cout << hero.player->y << std::endl;
-							gototarget(shoot.bullet->dx, shoot.bullet->dy, pos.x, pos.y, hero.player->x, hero.player->y);
-							shoot.bullet->sprite->setRotation(rotation);
-							lists->bullets.push_back(shoot.bullet);
-						}
-						else {
-							for (int i = 0; i < 7; i++) {
-								shoot.bullet = new Bullet(config.Shot, "Bullet", *game.lvl, hero.player->x, hero.player->y, 10, 10, hero.player->dir);
-								gototarget(shoot.bullet->dx, shoot.bullet->dy, pos.x - 20 + random_number(40) ,pos.y - 20 + random_number(40), hero.player->x, hero.player->y);
-								lists->bullets.push_back(shoot.bullet);
-							}
-						}
-					}
+					//0
+					actionShoot(lists, hero, shoot, config, game, reload_time, pos);
+					reload_clock.restart();
 				}
 			}
 			if (event.type == Event::MouseWheelMoved) {
@@ -237,107 +191,31 @@ void StartGame(Config & config, Game1 & game, Hero & hero, Lists * lists, Info &
 					}
 				}
 			}
-
 		}
 
-			if (hero.player->life == true) {
-				controlPlayer(*hero.player->sprite, hero.player->dir, hero.player->speed, time, Keyboard::Key::A, Keyboard::Key::D, Keyboard::Key::W, Keyboard::Key::S, 25);
-			}
-			for (lists->it = lists->entities.begin(); lists->it != lists->entities.end(); lists->it++) {
-				gototarget((*lists->it)->Xdir, (*lists->it)->Ydir, hero.player->getX(), hero.player->getY(), (*lists->it)->getX(), (*lists->it)->getY());
-				dX = hero.player->x - (*lists->it)->x;//вектор , колинеарный прямой, которая пересекает спрайт и курсор
-				dY = hero.player->y - (*lists->it)->y;//он же, координата y
-				rotation = (atan2(dY, dX)) * 180 / 3.14159265;//получаем угол в радианах и переводим его в градусы
-																	
-				(*lists->it)->sprite->setRotation(rotation + 90);
-				//сделать функцию
-				for (lists->it2 = lists->entities.begin(); lists->it2 != lists->entities.end(); lists->it2++) {
-					if ((*lists->it2)->getRect() != (*lists->it)->getRect()) {
-						if ((*lists->it2)->getRect().intersects((*lists->it)->getRect())) {
-							if (calculateDistantion(hero.player->getX(), hero.player->getY(), (*lists->it)->getX(), (*lists->it)->getY()) > calculateDistantion(hero.player->getX(), hero.player->getY(), (*lists->it2)->getX(), (*lists->it2)->getY())) {
-								(*lists->it)->x = (*lists->it)->x - (*lists->it)->Xdir;
-								(*lists->it)->y = (*lists->it)->y - (*lists->it)->Ydir;
-							}
-							else {
-								(*lists->it2)->x = (*lists->it2)->x - (*lists->it2)->Xdir;
-								(*lists->it2)->y = (*lists->it2)->y - (*lists->it2)->Ydir;
-							}
-						}
 
-					}
-				}
-				//function
+		if (hero.player->life == true) {
+			controlPlayer(*hero.player->sprite, hero.player->dir, hero.player->speed, time, Keyboard::Key::A, Keyboard::Key::D, Keyboard::Key::W, Keyboard::Key::S, 25);
+		}
+		for (lists->it = lists->entities.begin(); lists->it != lists->entities.end(); lists->it++) {
+			gototarget((*lists->it)->Xdir, (*lists->it)->Ydir, hero.player->getX(), hero.player->getY(), (*lists->it)->getX(), (*lists->it)->getY());
+			(*lists->it)->sprite->setRotation(actionGetRotation(hero.player->x, hero.player->y, (*lists->it)->x, (*lists->it)->y) + 90);
 
-				for (lists->bull = lists->bullets.begin(); lists->bull != lists->bullets.end();) {
-					if ((*lists->it)->getRect().intersects((*lists->bull)->getRect())) {
-						(*lists->it)->health = (*lists->it)->health - hero.player->damage;
-						lists->bull = lists->bullets.erase(lists->bull);
-					}
-
-					else {
-						lists->bull++;
-					}
-				}
-				//******
+			eventZombieHustle(lists, hero);
+			eventHitZombie(lists, hero, time);
 
 
-				//timer
-				if (game.speed_game != 1) {
-					game.timer += time;
-					if (game.timer >= 10000) {
-						game.timer = 0;
-						game.speed_game = 1;
-					}
-				}
-				//****
+			actionSlowMotion(game, time);
+			eventZombieAtack(lists, hero, time);
+		}
 
-				//DONE
-				if ((*lists->it)->getRect().intersects(hero.player->getRect())) {
-					(*lists->it)->player_contact = true;
-					if (int(time) % 10 == 0) {
-						hero.player->health = hero.player->health - 0;
-					}
-
-				}
-				else {
-					(*lists->it)->player_contact = false;
-				}
-				//**********
-			}
-
-			//bonus
-			for (lists->bon = lists->bonuses.begin(); lists->bon != lists->bonuses.end();) {
-				if ((*lists->bon)->getRect().intersects(hero.player->getRect())) {
-					if ((*lists->bon)->Name == 1) {
-						hero.player->damage += 10.0;
-					}
-					else if ((*lists->bon)->Name == 2) {
-						hero.player->health += 10;
-					}
-					else if ((*lists->bon)->Name == 3) {
-						game.speed_game = 0.1;
-					}
-					else if ((*lists->bon)->Name == 4) {
-						hero.player->take_uzi = true;
-					}
-					else if ((*lists->bon)->Name == 5) {
-						hero.player->take_shotgun = true;
-					}
-					else {
-						hero.player->take_machinegun = true;
-					}
-					lists->bon = lists->bonuses.erase(lists->bon);
-				}
-				else {
-					lists->bon++;
-				}
-			}
-			//***
-
-			if (lists->entities.size() == 0) {
-				GetEnemys(config, lists, game, enemy);
-			}
+		eventGetBonus(lists, hero, time, game.speed_game);
+		if (lists->entities.size() == 0) {
+			GetEnemys(config, lists, game, enemy);
+		}
+		eventBulletDestroy(lists, hero, time);
 		getCoord(hero.player->x, hero.player->y, *game.view1);
+		eventDropBonus(lists, hero, time, config);
 		DrawingGame(config, game, hero, *lists, info, time);
 	}
 }

@@ -1,13 +1,11 @@
 #pragma once
 #include "stdafx.h"
-#include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
-#include <iostream>
 #include "Classes.h"
 #include <list>
 
 
-struct Config {
+static struct Config {
 	std::string imageHeroPistol = "./files/sprites/player_pistol.png";
 	std::string imageHeroUzi = "./files/sprites/player_uzi.png";
 	std::string imageHeroShotgun = "./files/sprites/player_shotgun.png";
@@ -36,9 +34,7 @@ struct Config {
 	std::string bonus = "./files/img/bonus/bonuses.png";
 };
 
-struct Level;
-
-struct Game1 //структура в GameStruct
+static struct Game1 //структура в GameStruct
 {
 	sf::RenderWindow *window;
 	sf::View *view1;
@@ -50,7 +46,7 @@ struct Game1 //структура в GameStruct
 };
 
 
-struct Hero 
+static struct Hero
 {
 	Player* player;
 	Object player_obj = Object();
@@ -60,13 +56,13 @@ struct Hero
 	int health = 150;
 };
 
-struct Shoot {
+static struct Shoot {
 	Bullet * bullet;
 	float H = 20;
 	float W = 20;
 };
 
-struct Monster
+static struct Monster
 {
 	Enemy* normal;
 	Object monster_obj= Object();
@@ -81,14 +77,14 @@ struct Monster
 	int boss_health = 950;
 };
 
-struct Info
+static struct Info
 {
 	Font font;
 	Text *text;
 	int font_size = 20;
 };
 
-struct sounds
+static struct sounds
 {
 	sf::Music music;
 	sf::SoundBuffer shootBuffer;
@@ -102,7 +98,7 @@ struct sounds
 };
 
 
-struct Lists
+static struct Lists
 {
 	std::list<Enemy*>  entities;//создаю список, сюда буду кидать объекты.например врагов.
 	std::list<Enemy*>::iterator it;//итератор чтобы проходить по эл-там списка

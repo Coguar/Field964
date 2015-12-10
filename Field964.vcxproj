@@ -167,6 +167,7 @@ copy "C:\Users\Степан\Documents\Visual Studio 2015\SFML\bin\sfml-audio-2.d
   <ItemGroup>
     <ClInclude Include="..\TinyXML\tinystr.h" />
     <ClInclude Include="..\TinyXML\tinyxml.h" />
+    <ClInclude Include="action.h" />
     <ClInclude Include="cam.h" />
     <ClInclude Include="Classes.h" />
     <ClInclude Include="control.h" />
@@ -178,7 +179,6 @@ copy "C:\Users\Степан\Documents\Visual Studio 2015\SFML\bin\sfml-audio-2.d
     <ClInclude Include="GoToTarget.h" />
     <ClInclude Include="health.h" />
     <ClInclude Include="level.h" />
-    <ClInclude Include="level.hpp" />
     <ClInclude Include="map.h" />
     <ClInclude Include="randomValue.h" />
     <ClInclude Include="sprite_position.h" />
@@ -190,6 +190,7 @@ copy "C:\Users\Степан\Documents\Visual Studio 2015\SFML\bin\sfml-audio-2.d
     <ClCompile Include="..\TinyXML\tinyxml.cpp" />
     <ClCompile Include="..\TinyXML\tinyxmlerror.cpp" />
     <ClCompile Include="..\TinyXML\tinyxmlparser.cpp" />
+    <ClCompile Include="action.cpp" />
     <ClCompile Include="control.cpp" />
     <ClCompile Include="distantion.cpp" />
     <ClCompile Include="drawMap.cpp" />
@@ -198,6 +199,7 @@ copy "C:\Users\Степан\Documents\Visual Studio 2015\SFML\bin\sfml-audio-2.d
     <ClCompile Include="getbonus.cpp" />
     <ClCompile Include="GoToTarget.cpp" />
     <ClCompile Include="health.cpp" />
+    <ClCompile Include="Level.cpp" />
     <ClCompile Include="randomValue.cpp" />
     <ClCompile Include="sprite_position.cpp" />
     <ClCompile Include="stdafx.cpp">
