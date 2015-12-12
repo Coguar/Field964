@@ -172,14 +172,11 @@ copy "C:\Users\Степан\Documents\Visual Studio 2015\SFML\bin\sfml-audio-2.d
     <ClInclude Include="Classes.h" />
     <ClInclude Include="control.h" />
     <ClInclude Include="distantion.h" />
-    <ClInclude Include="drawMap.h" />
     <ClInclude Include="gameEvent.h" />
     <ClInclude Include="GamesStruct.h" />
-    <ClInclude Include="Game_window.h" />
     <ClInclude Include="GoToTarget.h" />
     <ClInclude Include="health.h" />
     <ClInclude Include="level.h" />
-    <ClInclude Include="map.h" />
     <ClInclude Include="randomValue.h" />
     <ClInclude Include="sprite_position.h" />
     <ClInclude Include="stdafx.h" />
@@ -193,10 +190,8 @@ copy "C:\Users\Степан\Documents\Visual Studio 2015\SFML\bin\sfml-audio-2.d
     <ClCompile Include="action.cpp" />
     <ClCompile Include="control.cpp" />
     <ClCompile Include="distantion.cpp" />
-    <ClCompile Include="drawMap.cpp" />
     <ClCompile Include="Field964.cpp" />
     <ClCompile Include="gameEvent.cpp" />
-    <ClCompile Include="getbonus.cpp" />
     <ClCompile Include="GoToTarget.cpp" />
     <ClCompile Include="health.cpp" />
     <ClCompile Include="Level.cpp" />

@@ -2,29 +2,51 @@
 #include <SFML/Graphics.hpp>
 #include "global.h"
 #include "level.h"
+#include <map>
 
 using namespace sf;
+
+struct PositionObj
+{
+	float dx;
+	float dy;
+
+	float x;
+	float y;
+
+};
+
+struct Properties
+{
+	float speed;
+	float moveTimer;
+
+	int w;
+	int h;
+	int health;
+
+	bool life;
+	sf::String name;
+};
 
 static class Entity {
 public:
 	std::vector<Object> obj;//вектор объектов карты
-	float dx, dy, x, y, speed, moveTimer;
-	int w, h, health;
-	bool life;
+	PositionObj pos;
+	Properties properties;
 	sf:: Texture* texture = new Texture;
 	sf::Sprite* sprite = new Sprite;
-	sf::String name;
 	Entity(sf::Image & image, sf::String Name, float X, float Y, int W, int H) {
-		x = X; y = Y; w = W; h = H; name = Name; moveTimer = 0;
-		speed = 0; health = 100; dx = 0; dy = 0;
-		life = true;
+		pos.x = X; pos.y = Y; properties.w = W; properties.h = H; properties.name = Name; properties.moveTimer = 0;
+		properties.speed = 0; properties.health = 100; pos.dx = 0; pos.dy = 0;
+		properties.life = true;
 		texture->loadFromImage(image);
 		sprite->setTexture(*texture);
-		sprite->setOrigin(w / 2, h / 2);
+		sprite->setOrigin(properties.w / 2, properties.h / 2);
 	}
 
 	sf::FloatRect getRect() {
-		return sf::FloatRect(x - w / 2, y - h / 2, h, w);
+		return sf::FloatRect(pos.x - properties.w / 2, pos.y - properties.h / 2, properties.h, properties.w);
 	}
 };
 
@@ -40,60 +62,48 @@ public:
 	Enemy(String F, Level &lvl, float X, float Y, float W, float H, String bot_name) :Entity(image, bot_name, X, Y, W, H) {
 		obj = lvl.GetAllObjects();
 		if (bot_name == "normal") {
-			health = 100;
-			speed = 0.1;
+			properties.health = 100;
+			properties.speed = 0.1;
 			File = F;//имя файла+расширение
-			w = W; h = H;//высота и ширина
+			properties.w = W; properties.h = H;//высота и ширина
 			image.loadFromFile(File);//запихиваем в image наше изображение вместо File мы передадим то, что пропишем при создании объекта. В нашем случае "hero.png" и получится запись идентичная 	image.loadFromFile("images/hero/png");
 			texture->loadFromImage(image);
 			sprite->setTexture(*texture);
-			x = X; y = Y;
+			pos.x = X; pos.y = Y;
 			sprite->setTextureRect(IntRect(0, 0, 71 , 71));
-			sprite->setOrigin(w / 2, h / 2);
-			sprite->setPosition(x, y);
+			sprite->setOrigin(properties.w / 2, properties.h / 2);
+			sprite->setPosition(pos.x, pos.y);
 		}
 		else if (bot_name == "boss") {
-			health = 950;
-			speed = 0.09;
+			properties.health = 950;
+			properties.speed = 0.09;
 			File = F;//имя файла+расширение
-			w = W; h = H;//высота и ширина
+			properties.w = W; properties.h = H;//высота и ширина
 			image.loadFromFile(File);//запихиваем в image наше изображение вместо File мы передадим то, что пропишем при создании объекта. В нашем случае "hero.png" и получится запись идентичная 	image.loadFromFile("images/hero/png");
 			texture->loadFromImage(image);
 			sprite->setTexture(*texture);
-			x = X; y = Y;
+			pos.x = X; pos.y = Y;
 			sprite->setTextureRect(IntRect(0, 0, 256, 256));
-			sprite->setOrigin(w / 2, h / 2);
-			sprite->setPosition(x, y);
+			sprite->setOrigin(properties.w / 2, properties.h / 2);
+			sprite->setPosition(pos.x, pos.y);
 		}
 
 	}
 	void update(float time) {
-		x1 = x;
-		y1 = y;
-		if (health <= 0) {
-			life = false;
+		x1 = pos.x;
+		y1 = pos.y;
+		if (properties.health <= 0) {
+			properties.life = false;
 		}
-		if (life == true) {
-			/*switch (Xdir) {//реализуем поведение в зависимости от направления. (каждая цифра соответствует направлению)
-			case 0: dx = speed;   break;//по иксу задаем положительную скорость, по игреку зануляем. получаем, что персонаж идет только вправо
-			case 1: dx = -speed;  break;
-			case 2: dx = 0;  break;
-			}
-			switch (Ydir) {//реализуем поведение в зависимости от направления. (каждая цифра соответствует направлению)
-			case 0: dy = speed;   break;//по иксу задаем положительную скорость, по игреку зануляем. получаем, что персонаж идет только вправо
-			case 1: dy = -speed;  break;
-			case 2: dy = 0;  break;
-			}*/
-
-			//spriteposition(*sprite, Xdir, Ydir, time);
+		if (properties.life == true) {
 			x1 += Xdir * time;
 			
-			if (map_event(y, x1) == false && player_contact == false && contact == false) {
-				x = x1;
+			if (map_event(pos.y, x1) == false && player_contact == false && contact == false) {
+				pos.x = x1;
 			}
 			y1 += Ydir * time;
-			if (map_event(y1, x) == false && player_contact == false && contact == false) {
-				y = y1;
+			if (map_event(y1, pos.x) == false && player_contact == false && contact == false) {
+				pos.y = y1;
 			}
 
 			if (player_contact == true) {
@@ -103,23 +113,23 @@ public:
 				sprite->setColor(Color::White);
 			}
 
-			sprite->setPosition(x, y);
+			sprite->setPosition(pos.x, pos.y);
 		}
 	}
 
 	FloatRect getRect() {
-		return FloatRect(x - w / 2, y - h / 2, w, h);
+		return FloatRect(pos.x - properties.w / 2, pos.y - properties.h / 2, properties.w, properties.h);
 	}
 
 
 	FloatRect getRect1() {
-		return FloatRect(x1 - w / 2, y1 - h / 2, w, h);
+		return FloatRect(x1 - properties.w / 2, y1 - properties.h / 2, properties.w, properties.h);
 	}
 
 	bool map_event(float y1, float x1) {
 		bool wall = 0;
 		for (int i = 0; i < obj.size(); i++)//проходимся по объектам
-			if (FloatRect(x1 - w / 2, y1 - h / 2, h, w).intersects(obj[i].rect))//проверяем пересечение игрока с объектом
+			if (FloatRect(x1 - properties.w / 2, y1 - properties.h / 2, properties.h, properties.w).intersects(obj[i].rect))//проверяем пересечение игрока с объектом
 			{
 				if (obj[i].name == "solid") {
 					wall = 1;
@@ -129,10 +139,10 @@ public:
 	}
 
 	float getX() {	//этим методом будем забирать координату Х	
-		return x;
+		return pos.x;
 	}
 	float getY() {	//этим методом будем забирать координату Y 	
-		return y;
+		return pos.y;
 	}
 };
 
@@ -169,121 +179,135 @@ public:
 	Player(String F, String Name, Level &lev, float X, float Y, float W, float H, int health_point) :Entity(image, Name, X, Y, W, H) {  //Конструктор с параметрами(формальными) для класса Player. При создании объекта класса мы будем задавать имя файла, координату Х и У, ширину и высоту
 		obj = lev.GetAllObjects();
 
-		health = health_point;
+		properties.health = health_point;
 		File = F;//имя файла+расширение
-		w = W; h = H;//высота и ширина
+		properties.w = W; properties.h = H;//высота и ширина
 		image.loadFromFile(File);//запихиваем в image наше изображение вместо File мы передадим то, что пропишем при создании объекта. В нашем случае "hero.png" и получится запись идентичная 	image.loadFromFile("images/hero/png");
 		texture->loadFromImage(image);//закидываем наше изображение в текстуру
 		sprite->setTexture(*texture);//заливаем спрайт текстурой
-		x = X; y = Y;//координата появления спрайта
-		sprite->setTextureRect(IntRect(8, 0, 50, h));  //Задаем спрайту один прямоугольник для вывода одного льва, а не кучи львов сразу. IntRect - приведение типов
+		pos.x = X; pos.y = Y;//координата появления спрайта
+		sprite->setTextureRect(IntRect(8, 0, 50, properties.h));  //Задаем спрайту один прямоугольник для вывода одного льва, а не кучи львов сразу. IntRect - приведение типов
 		weapoon = pistol;
 	}
 
-	void update(float time) {
-		x1 = x;
-		y1 = y;
-
-
-		switch (gun) {
-		case 0: weapoon = pistol;  break;
-		case 1: weapoon = uzi;  if (take_uzi == false) { gun += choose_gun; }  break;
-		case 2: weapoon = shotgun; if (take_shotgun == false) { gun += choose_gun; }  break;
-		case 3: weapoon = machinegun; if (take_machinegun == false) { gun += choose_gun; if (choose_gun == 1) { gun = 0; } }  break;
+	void _chose_gun() {
+		bool set_gun = false;
+		while (set_gun == false) {
+			switch (gun) {
+			case 0: weapoon = pistol; set_gun = true;  break;
+			case 1: weapoon = uzi;  if (take_uzi == false) { gun += choose_gun; } 
+					else {set_gun = true;}
+					break;
+			case 2: weapoon = shotgun; if (take_shotgun == false) { gun += choose_gun; }
+					else { set_gun = true; }
+					break;
+			case 3: weapoon = machinegun; if (take_machinegun == false) { gun += choose_gun; if (choose_gun == 1) { gun = 0; } }
+					else { set_gun = true; }
+					break;
+			}
 		}
+	}
 
+	void _take_gun() {
 		switch (weapoon) {
-		case pistol: image.loadFromFile("./files/sprites/player_pistol.png"); texture->loadFromImage(image); 
-			sprite->setTextureRect(IntRect(8, 0, 50, h)); sprite->setOrigin(w / 2, h / 2); 
+		case pistol: image.loadFromFile("./files/sprites/player_pistol.png"); texture->loadFromImage(image);
+			sprite->setTextureRect(IntRect(8, 0, 50, properties.h)); sprite->setOrigin(properties.w / 2, properties.h / 2);
 			damage = damage_pistol + bonus_damage;  ammo = -1; break;
 		case uzi: if (take_uzi == true) {
 			image.loadFromFile("./files/sprites/player_uzi.png"); texture->loadFromImage(image);
-			sprite->setTextureRect(IntRect(8, 0, 50, h)); sprite->setOrigin(w / 2, h / 2);
-		} 
-			damage = damage_uzi + bonus_damage; ammo = ammo_uzi;  break;
+			sprite->setTextureRect(IntRect(8, 0, 50, properties.h)); sprite->setOrigin(properties.w / 2, properties.h / 2);
+		}
+				  damage = damage_uzi + bonus_damage; ammo = ammo_uzi;  break;
 		case shotgun:if (take_shotgun == true) {
 			image.loadFromFile("./files/sprites/player_shotgun.png"); texture->loadFromImage(image);
-			sprite->setTextureRect(IntRect(3, 0, 68, 100)); sprite->setOrigin(w / 2 + 11, 100 / 2);
-		} 
-			damage = damage_shotgun + bonus_damage; ammo = ammo_shootgun;  break;
+			sprite->setTextureRect(IntRect(3, 0, 68, 100)); sprite->setOrigin(properties.w / 2 + 11, 100 / 2);
+		}
+					 damage = damage_shotgun + bonus_damage; ammo = ammo_shootgun;  break;
 		case machinegun: if (take_machinegun == true) {
 			image.loadFromFile("./files/sprites/player_machinegun.png"); texture->loadFromImage(image);
-			sprite->setTextureRect(IntRect(3, 0, 68, 100)); sprite->setOrigin(w / 2 + 11, 100 / 2);
+			sprite->setTextureRect(IntRect(3, 0, 68, 100)); sprite->setOrigin(properties.w / 2 + 11, 100 / 2);
 		}
-		damage = damage_machinegun + bonus_damage; ammo = ammo_machinegun;  break;
+						 damage = damage_machinegun + bonus_damage; ammo = ammo_machinegun;  break;
 		}
+	}
 
+	void _set_speed() {
 		switch (dir) {
-		case 0: dx = speed; dy = 0;   break;
-		case 1: dx = -speed; dy = 0;   break;
-		case 2: dx = 0; dy = speed;   break;
-		case 3: dx = 0; dy = -speed;   break;
-		case 4: dx = speed * 0.66; dy = speed * 0.66;   break;
-		case 5: dx = speed * 0.66; dy = -speed * 0.66;   break;
-		case 6: dx = -speed * 0.66; dy = -speed * 0.66;   break;
-		case 7: dx = -speed * 0.66; dy = speed * 0.66;   break;
-
+		case 0: pos.dx = properties.speed; pos.dy = 0;   break;
+		case 1: pos.dx = -properties.speed; pos.dy = 0;   break;
+		case 2: pos.dx = 0; pos.dy = properties.speed;   break;
+		case 3: pos.dx = 0; pos.dy = -properties.speed;   break;
+		case 4: pos.dx = properties.speed * 0.66; pos.dy = properties.speed * 0.66;   break;
+		case 5: pos.dx = properties.speed * 0.66; pos.dy = -properties.speed * 0.66;   break;
+		case 6: pos.dx = -properties.speed * 0.66; pos.dy = -properties.speed * 0.66;   break;
+		case 7: pos.dx = -properties.speed * 0.66; pos.dy = properties.speed * 0.66;   break;
 		}
-		x1 += dx*time;
-		y1 += dy*time;
+	}
 
-		if (map_event(y1, x1) == false) {
-			x = x1;
-			y = y1;
+	void update(float time) {
+		x1 = pos.x;
+		y1 = pos.y;
+
+		_chose_gun();
+		_take_gun();
+		_set_speed();
+
+		x1 += pos.dx * time;
+		y1 += pos.dy * time;
+
+		if (_map_event(y1, x1) == false) {
+			pos.x = x1;
+			pos.y = y1;
 		}
 
-		speed = 0;
+		properties.speed = 0;
 
-		if (health <= 0) {
-			life = false;
+		if (properties.health <= 0) {
+			properties.life = false;
 		}
 
-		if (life == false) {
-			//sprite->setTextureRect(IntRect(392, 11, w, h));
-			health = 0;
+		if (properties.life == false) {
+			properties.health = 0;
 		}
-		sprite->setPosition(x, y);
+		sprite->setPosition(pos.x, pos.y);
 
 	}
 
 	FloatRect getRect() {
-		return FloatRect(x - w / 2, y - h / 2, h, w);
-		std::cout << h << std::endl;
+		return FloatRect(pos.x - properties.w / 2, pos.y - properties.h / 2, properties.h, properties.w);
+		std::cout << properties.h << std::endl;
 	}
 
 	FloatRect getRect1() {
-		return FloatRect(x1 - w / 2, y1 - h / 2, h, w);
-		std::cout << h << std::endl;
+		return FloatRect(x1 - properties.w / 2, y1 - properties.h / 2, properties.h, properties.w);
 	}
 
 	float getX() {
-		return x;
+		return pos.x;
 	}
 	float getY() {
-		return y;
+		return pos.y;
 	}
 
 
 
-	bool map_event(float y1, float x1) {
+	bool _map_event(float y1, float x1) {
 		bool wall = 0;
 		for (int i = 0; i < obj.size(); i++)
 			if (getRect1().intersects(obj[i].rect))
 			{
-				std::cout << obj[i].name;
 				if (obj[i].name == "solid") {
 					wall = true;
-					std::cout << "Yes";
 				}
 				return wall;
 			}
 	}
 };
 
-static class Bullet {//класс пули
+static class Bullet {
 public:
 	std::vector<Object> obj;
-	int direction;//направление пули
+	int direction;
 	float dx, dy, x, y, speed, moveTimer;
 	int w, h, health;
 	bool life;
@@ -293,50 +317,37 @@ public:
 	Image image;
 	Bullet(String F, String Name, Level &lvl, float X, float Y, int W, int H, int dir) {
 		image.loadFromFile(F);
-		std::cout << "nice";
 		life = true;
 		texture->loadFromImage(image);
 		sprite->setTexture(*texture);
 
-		obj = lvl.GetObjects("solid");//инициализируем .получаем нужные объекты для взаимодействия пули с картой
+		obj = lvl.GetObjects("solid");
 		x = X;
 		y = Y;
 		direction = dir;
 		speed = 3;
 		w = h = 5;
 		life = true;
-		//выше инициализация в конструкторе
 	}
 
 
 	void update(float time)
 	{
-		/*switch (direction)
-		{
-		case 0: dx = speed; dy = 0;   break;
-		case 1: dx = -speed; dy = 0;   break;
-		case 2: dx = 0; dy = speed;   break;
-		case 3: dx = 0; dy = -speed;   break;
-		case 4: dx = speed * 0.66; dy = speed * 0.66;   break;
-		case 5: dx = speed * 0.66; dy = -speed * 0.66;   break;
-		case 6: dx = -speed * 0.66; dy = -speed * 0.66;   break;
-		case 7: dx = -speed * 0.66; dy = speed * 0.66;   break;
-		}*/
 
-		x += dx*time * 10;//само движение пули по х
-		y += dy*time * 10;//по у
+		x += dx*time * 10;
+		y += dy*time * 10;
 
 		if (x <= 0) x = 1;
 		if (y <= 0) y = 1;
 
-		for (int i = 0; i < obj.size(); i++) {//проход по объектам solid
-			if (getRect().intersects(obj[i].rect)) //если этот объект столкнулся с пулей,
+		for (int i = 0; i < obj.size(); i++) {
+			if (getRect().intersects(obj[i].rect))
 			{
-				life = false;// то пуля умирает
+				life = false;
 			}
 		}
 
-		sprite->setPosition(x + w / 2, y + h / 2);//задается позицию пуле
+		sprite->setPosition(x + w / 2, y + h / 2);
 	}
 
 	FloatRect getRect() {
@@ -345,10 +356,19 @@ public:
 };
 
 static class Bonus {
+private:
+	std::map<int, IntRect> bonus_rect =
+	{ { 1, IntRect(0, 0, 32, 32) },
+		{ 2, IntRect(32, 0, 32, 32) },
+		{ 3, IntRect(64, 0, 32, 32) },
+		{ 4, IntRect(0, 32, 32, 32) },
+		{ 5, IntRect(32, 32, 128, 32) },
+		{ 6, IntRect(0, 64, 128, 64) } };
 public:
 	int Name;
 	float x, y;
 	int w, h;
+	
 	sf::Texture* texture = new Texture;
 	sf::Sprite* sprite = new Sprite;
 	sf::String name;
@@ -360,16 +380,7 @@ public:
 		x = X;
 		y = Y;
 		Name = name1;
-		switch (Name)
-		{
-		case 1: sprite->setTextureRect(IntRect(0, 0, 32, 32)); break;
-		case 2: sprite->setTextureRect(IntRect(32 * (Name - 1), 0, 32, 32)); break;
-		case 3: sprite->setTextureRect(IntRect(32 * (Name - 1), 0, 32, 32)); break;
-		case 4: sprite->setTextureRect(IntRect(0, 32, 32, 32)); break;
-		case 5: sprite->setTextureRect(IntRect(32 , 32, 128, 32)); break;
-		case 6: sprite->setTextureRect(IntRect(0, 64, 128, 64)); break;
-		}
-		
+		sprite->setTextureRect(bonus_rect[name1]);
 		sprite->setPosition(x, y);
 		sprite->setOrigin(w / 2, h / 2);
 	}

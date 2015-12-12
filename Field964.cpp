@@ -8,26 +8,22 @@
 #include "drawMap.h"
 #include "health.h"
 #include "control.h"
+#include <memory>
 #include <iostream>
 #include <sstream>
 #include <fstream>
 #include <string>
 #include <vector>
-//#include <list>
-#include "Game_window.h"
 #include "distantion.h"
 #include "GoToTarget.h"
 #include "sprite_position.h"
-//#include "global.h"
-//#include "level.h"
-//#include "Classes.h"
 #include "GamesStruct.h"
 #include "randomValue.h"
 #include "gameEvent.h"
 #include "action.h"
 
 
-using namespace sf;//включаем пространство имен sf, чтобы постоянно не писать sf::
+using namespace sf;
 
 sf::View view1, view2;
 
@@ -55,58 +51,48 @@ void InfoInit(Config & config, Info & info)
 	info.text->setStyle(Text::Bold);
 }
 
-void GetTrees(Config & config, Lists * lists, Game1 & game)
+void GetTrees(Config & config, Lists & lists, Game1 & game)
 {
 	std::vector<Object> e = game.lvl->GetObjects("tree");
 	for (int i = 0; i < e.size(); i++) {
-		lists->woods.push_back(new Tree(config.Tree, e[i].rect.left, e[i].rect.top));
+		lists.woods.push_back(new Tree(config.Tree, e[i].rect.left, e[i].rect.top));
 	}
 }
 
-void GetGuns(Config & config, Lists * lists, Game1 & game)
+void GetGuns(Config & config, Lists & lists, Game1 & game)
 {
 	std::vector<Object> e = game.lvl->GetObjects("uzi");
 	for (int i = 0; i < e.size(); i++) {
-		lists->bonuses.push_back(new Bonus(config.bonus, 4, e[i].rect.left, e[i].rect.top));
+		lists.bonuses.push_back(new Bonus(config.bonus, 4, e[i].rect.left, e[i].rect.top));
 	}
 	e = game.lvl->GetObjects("shotgun");
 	for (int i = 0; i < e.size(); i++) {
-		lists->bonuses.push_back(new Bonus(config.bonus, 5, e[i].rect.left, e[i].rect.top));
+		lists.bonuses.push_back(new Bonus(config.bonus, 5, e[i].rect.left, e[i].rect.top));
 	}
 	e = game.lvl->GetObjects("machinegun");
 	for (int i = 0; i < e.size(); i++) {
-		lists->bonuses.push_back(new Bonus(config.bonus, 6, e[i].rect.left, e[i].rect.top));
+		lists.bonuses.push_back(new Bonus(config.bonus, 6, e[i].rect.left, e[i].rect.top));
 	}
 }
 
-void GetEnemys(Config & config, Lists * lists, Game1 & game, Monster & enemy)
+void GetEnemys(Config & config, Lists & lists, Game1 & game, Monster & enemy)
 {
 	std::vector<Object> e = game.lvl->GetObjects("normal");
 	String name;
+	int number;
 	for (int i = 0; i < e.size(); i++) {
-
-		switch (random_number(10)) {
-		case 0: name  = config.zombie1;   break;
-		case 1: name = config.zombie2;   break;
-		case 2: name = config.zombie3;   break;
-		case 3: name = config.zombie4;   break;
-		case 4: name = config.zombie5;   break;
-		case 5: name = config.zombie6;   break;
-		case 6: name = config.zombie7;   break;
-		case 7: name = config.zombie8;   break;
-		case 8: name = config.zombie9;   break;
-		case 9: name = config.zombie10;   break;
-		}
+		number = (random_number(10));
+		name = config.zombies[number];
 		enemy.normal = new Enemy(name, *game.lvl, e[i].rect.left, e[i].rect.top, enemy.normal_W, enemy.normal_H, "normal");
 
-		lists->entities.push_back(enemy.normal);
+		lists.entities.push_back(enemy.normal);
 	}
 	e = game.lvl->GetObjects("boss");
 	name = config.boss;
 	for (int i = 0; i < e.size(); i++) {
 		enemy.boss = new Enemy(name, *game.lvl, e[i].rect.left, e[i].rect.top, enemy.boss_W, enemy.boss_H, "boss");
 
-		lists->entities.push_back(enemy.boss);
+		lists.entities.push_back(enemy.boss);
 	}
 
 }
@@ -137,12 +123,12 @@ void DrawingGame(Config & config, Game1 & game, Hero & hero, Lists & lists, Info
 	for (lists.wood = lists.woods.begin(); lists.wood != lists.woods.end(); lists.wood++) {
 		game.window->draw(*(*lists.wood)->sprite);
 	}
-	ShowHealth(*game.window, *info.text, hero.player->health, *game.view1);
+	ShowHealth(*game.window, *info.text, hero.player->properties.health, *game.view1);
 	ShowAmmo(*game.window, *info.text, hero.player->ammo, *game.view1);
 	game.window->display();
 }
 
-void StartGame(Config & config, Game1 & game, Hero & hero, Lists * lists, Info & info, Shoot & shoot, Monster & enemy)
+void StartGame(Config & config, Game1 & game, Hero & hero, Lists & lists, Info & info, Shoot & shoot, Monster & enemy)
 {
 	Clock clock;
 	Clock reload_clock;
@@ -157,7 +143,7 @@ void StartGame(Config & config, Game1 & game, Hero & hero, Lists * lists, Info &
 		Vector2i pixelPos = Mouse::getPosition(*game.window);
 		Vector2f pos = game.window->mapPixelToCoords(pixelPos);
 
-		hero.player->sprite->setRotation(actionGetRotation(pos.x, pos.y, hero.player->x, hero.player->y) + 90);
+		hero.player->sprite->setRotation(actionGetRotation(pos.x, pos.y, hero.player->pos.x, hero.player->pos.y) + 90);
 		while (game.window->pollEvent(event)) {
 			if (event.type == sf::Event::Closed) {
 				game.window->close();
@@ -194,12 +180,12 @@ void StartGame(Config & config, Game1 & game, Hero & hero, Lists * lists, Info &
 		}
 
 
-		if (hero.player->life == true) {
-			controlPlayer(*hero.player->sprite, hero.player->dir, hero.player->speed, time, Keyboard::Key::A, Keyboard::Key::D, Keyboard::Key::W, Keyboard::Key::S, 25);
+		if (hero.player->properties.life == true) {
+			controlPlayer(*hero.player->sprite, hero.player->dir, hero.player->properties.speed, time, Keyboard::Key::A, Keyboard::Key::D, Keyboard::Key::W, Keyboard::Key::S, 25);
 		}
-		for (lists->it = lists->entities.begin(); lists->it != lists->entities.end(); lists->it++) {
-			gototarget((*lists->it)->Xdir, (*lists->it)->Ydir, hero.player->getX(), hero.player->getY(), (*lists->it)->getX(), (*lists->it)->getY());
-			(*lists->it)->sprite->setRotation(actionGetRotation(hero.player->x, hero.player->y, (*lists->it)->x, (*lists->it)->y) + 90);
+		for (lists.it = lists.entities.begin(); lists.it != lists.entities.end(); lists.it++) {
+			gototarget((*lists.it)->Xdir, (*lists.it)->Ydir, hero.player->getX(), hero.player->getY(), (*lists.it)->getX(), (*lists.it)->getY());
+			(*lists.it)->sprite->setRotation(actionGetRotation(hero.player->pos.x, hero.player->pos.y, (*lists.it)->pos.x, (*lists.it)->pos.y) + 90);
 
 			eventZombieHustle(lists, hero);
 			eventHitZombie(lists, hero, time);
@@ -210,13 +196,13 @@ void StartGame(Config & config, Game1 & game, Hero & hero, Lists * lists, Info &
 		}
 
 		eventGetBonus(lists, hero, time, game.speed_game);
-		if (lists->entities.size() == 0) {
+		if (lists.entities.size() == 0) {
 			GetEnemys(config, lists, game, enemy);
 		}
 		eventBulletDestroy(lists, hero, time);
-		getCoord(hero.player->x, hero.player->y, *game.view1);
+		getCoord(hero.player->pos.x, hero.player->pos.y, *game.view1);
 		eventDropBonus(lists, hero, time, config);
-		DrawingGame(config, game, hero, *lists, info, time);
+		DrawingGame(config, game, hero, lists, info, time);
 	}
 }
 
@@ -224,18 +210,18 @@ void StartGame(Config & config, Game1 & game, Hero & hero, Lists * lists, Info &
 int main() {
 
 		Config config;
-		Game1 * game = new Game1();
-		Hero * hero = new Hero();
+		std::shared_ptr<Game1> game = std::make_shared<Game1>();
+		std::shared_ptr<Hero> hero = std::make_shared<Hero>();
 		Info info;
-		Lists* lists = new Lists();
-		Monster * enemy = new Monster();
-		Shoot* shoot = new Shoot();
+		std::shared_ptr<Lists> lists = std::make_shared<Lists>();
+		std::shared_ptr<Monster> enemy = std::make_shared<Monster>();
+		std::shared_ptr<Shoot> shoot = std::make_shared<Shoot>();
 
 		GameInit(config, *game, *hero);
 		InfoInit(config, info);
-		GetEnemys(config, lists, *game, *enemy);
-		GetTrees(config, lists, *game);
-		GetGuns(config, lists, *game);
+		GetEnemys(config, *lists, *game, *enemy);
+		GetTrees(config, *lists, *game);
+		GetGuns(config, *lists, *game);
 
 		float CurrentFrame = 0;
 		float CurrentFrame1 = 0;
@@ -243,6 +229,6 @@ int main() {
 
 		bool hit;
 
-		StartGame(config, *game, *hero, lists, info, *shoot, *enemy);
+		StartGame(config, *game, *hero, *lists, info, *shoot, *enemy);
 		return 0;
 	}

@@ -2,7 +2,8 @@
 #include "stdafx.h"
 #include <SFML/Audio.hpp>
 #include "Classes.h"
-#include <list>
+#include <list>]
+#include <vector>
 
 
 static struct Config {
@@ -13,16 +14,19 @@ static struct Config {
 
 	std::string imageHeroWarrior = "./files/img/heroWar.png";
 
-	std::string zombie1 = "./files/sprites/citizenzombie1.png";
-	std::string zombie2 = "./files/sprites/citizenzombie2.png";
-	std::string zombie3 = "./files/sprites/citizenzombie3.png";
-	std::string zombie4 = "./files/sprites/citizenzombie4.png";
-	std::string zombie5 = "./files/sprites/citizenzombie5.png";
-	std::string zombie6 = "./files/sprites/citizenzombie6.png";
-	std::string zombie7 = "./files/sprites/citizenzombie7.png";
-	std::string zombie8 = "./files/sprites/citizenzombie8.png";
-	std::string zombie9 = "./files/sprites/citizenzombie9.png";
-	std::string zombie10 = "./files/sprites/citizenzombie10.png";
+	std::vector<std::string> zombies =
+	{
+		"./files/sprites/citizenzombie1.png",
+		"./files/sprites/citizenzombie2.png",
+		"./files/sprites/citizenzombie3.png",
+		"./files/sprites/citizenzombie4.png",
+		"./files/sprites/citizenzombie5.png",
+		"./files/sprites/citizenzombie6.png",
+		"./files/sprites/citizenzombie7.png",
+		"./files/sprites/citizenzombie8.png",
+		"./files/sprites/citizenzombie9.png",
+		"./files/sprites/citizenzombie10.png"
+	};
 	std::string boss = "./files/sprites/boss.png";
 	
 	std::string Tree = "./files/img/tree1.png";

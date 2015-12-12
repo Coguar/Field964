@@ -11,22 +11,22 @@ float actionGetRotation(float to_x, float to_y, float from_x, float from_y) {
 	return rotation;
 }
 
-void actionShotgunShoot(Lists * lists, Hero & hero, Shoot & shoot, Config & config, Game1 & game, Vector2f & pos) {
+void actionShotgunShoot(Lists & lists, Hero & hero, Shoot & shoot, Config & config, Game1 & game, Vector2f & pos) {
 	for (int i = 0; i < 7; i++) {
-		shoot.bullet = new Bullet(config.Shot, "Bullet", *game.lvl, hero.player->x, hero.player->y, 10, 10, hero.player->dir);
-		gototarget(shoot.bullet->dx, shoot.bullet->dy, pos.x - 20 + random_number(40), pos.y - 20 + random_number(40), hero.player->x, hero.player->y);
-		lists->bullets.push_back(shoot.bullet);
+		shoot.bullet = new Bullet(config.Shot, "Bullet", *game.lvl, hero.player->pos.x, hero.player->pos.y, 10, 10, hero.player->dir);
+		gototarget(shoot.bullet->dx, shoot.bullet->dy, pos.x - 20 + random_number(40), pos.y - 20 + random_number(40), hero.player->pos.x, hero.player->pos.y);
+		lists.bullets.push_back(shoot.bullet);
 	}
 }
 
-void actionSingleShoot(Lists * lists, Hero & hero, Shoot & shoot, Config & config, Game1 & game, Vector2f & pos) {
-	float rotation = actionGetRotation(pos.x, pos.y, hero.player->x, hero.player->y);
+void actionSingleShoot(Lists & lists, Hero & hero, Shoot & shoot, Config & config, Game1 & game, Vector2f & pos) {
+	float rotation = actionGetRotation(pos.x, pos.y, hero.player->pos.x, hero.player->pos.y);
 
-	shoot.bullet = new Bullet(config.Bullet, "Bullet", *game.lvl, hero.player->x, hero.player->y, 20, 20, hero.player->dir);
-	std::cout << hero.player->y << std::endl;
-	gototarget(shoot.bullet->dx, shoot.bullet->dy, pos.x, pos.y, hero.player->x, hero.player->y);
+	shoot.bullet = new Bullet(config.Bullet, "Bullet", *game.lvl, hero.player->pos.x, hero.player->pos.y, 20, 20, hero.player->dir);
+	std::cout << hero.player->pos.y << std::endl;
+	gototarget(shoot.bullet->dx, shoot.bullet->dy, pos.x, pos.y, hero.player->pos.x, hero.player->pos.y);
 	shoot.bullet->sprite->setRotation(rotation);
-	lists->bullets.push_back(shoot.bullet);
+	lists.bullets.push_back(shoot.bullet);
 }
 
 void actionUseAmmo(Hero & hero) {
@@ -38,7 +38,7 @@ void actionUseAmmo(Hero & hero) {
 	}
 }
 
-void actionShoot(Lists * lists, Hero & hero, Shoot & shoot, Config & config, Game1 & game, float reload_time, Vector2f & pos) {
+void actionShoot(Lists & lists, Hero & hero, Shoot & shoot, Config & config, Game1 & game, float reload_time, Vector2f & pos) {
 	
 	if (reload_time >= hero.player->reload_time) {
 		hero.player->reload = true;

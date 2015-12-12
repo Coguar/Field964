@@ -4,7 +4,7 @@
 using namespace sf;
 
 void getCoord(float x, float y, View & view1)
-{ //функция для считывания координат игрока
+{ 
 	float tempX = x; float tempY = y;
 
 	if (x < view1.getSize().x / 2) tempX = view1.getSize().x / 2;
@@ -13,5 +13,4 @@ void getCoord(float x, float y, View & view1)
 	if (y > 3168 - view1.getSize().y / 2) tempY = 3168 - view1.getSize().y / 2;
 
 	view1.setCenter(tempX, tempY);
-	//следим за игроком, передавая его координаты. 
 }

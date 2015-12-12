@@ -24,22 +24,13 @@
     <ClInclude Include="targetver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="map.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="cam.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="drawMap.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="health.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="control.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Game_window.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="distantion.h">
@@ -83,9 +74,6 @@
     <ClCompile Include="Field964.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="drawMap.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="health.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -112,9 +100,6 @@
     </ClCompile>
     <ClCompile Include="..\TinyXML\tinyxmlparser.cpp">
       <Filter>Resource Files</Filter>
-    </ClCompile>
-    <ClCompile Include="getbonus.cpp">
-      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="randomValue.cpp">
       <Filter>Source Files</Filter>
