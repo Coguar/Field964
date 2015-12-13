@@ -41,7 +41,7 @@ void eventGetBonus(Lists & lists, Hero & hero, float time, float & speed) {
 				hero.player->properties.health += 10;
 			}
 			else if ((*lists.bon)->Name == 3) {
-				speed = 0.1;
+				speed = 0.1f;
 			}
 			else if ((*lists.bon)->Name == 4) {
 				hero.player->take_uzi = true;
@@ -63,7 +63,7 @@ void eventGetBonus(Lists & lists, Hero & hero, float time, float & speed) {
 void eventHitZombie(Lists & lists, Hero & hero, float time) {
 	for (lists.bull = lists.bullets.begin(); lists.bull != lists.bullets.end();) {
 		if ((*lists.it)->getRect().intersects((*lists.bull)->getRect())) {
-			(*lists.it)->properties.health = (*lists.it)->properties.health - hero.player->damage;
+			(*lists.it)->properties.health = (*lists.it)->properties.health - int(hero.player->damage);
 			lists.bull = lists.bullets.erase(lists.bull);
 		}
 

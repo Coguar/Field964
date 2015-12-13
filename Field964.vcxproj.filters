@@ -39,9 +39,6 @@
     <ClInclude Include="GoToTarget.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="sprite_position.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\TinyXML\tinystr.h">
       <Filter>Resource Files</Filter>
     </ClInclude>
@@ -84,9 +81,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="GoToTarget.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="sprite_position.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\TinyXML\tinystr.cpp">

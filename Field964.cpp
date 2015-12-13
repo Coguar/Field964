@@ -54,7 +54,7 @@ void InfoInit(Config & config, Info & info)
 void GetTrees(Config & config, Lists & lists, Game1 & game)
 {
 	std::vector<Object> e = game.lvl->GetObjects("tree");
-	for (int i = 0; i < e.size(); i++) {
+	for (size_t i = 0; i < e.size(); i++) {
 		lists.woods.push_back(new Tree(config.Tree, e[i].rect.left, e[i].rect.top));
 	}
 }
@@ -62,15 +62,15 @@ void GetTrees(Config & config, Lists & lists, Game1 & game)
 void GetGuns(Config & config, Lists & lists, Game1 & game)
 {
 	std::vector<Object> e = game.lvl->GetObjects("uzi");
-	for (int i = 0; i < e.size(); i++) {
+	for (size_t i = 0; i < e.size(); i++) {
 		lists.bonuses.push_back(new Bonus(config.bonus, 4, e[i].rect.left, e[i].rect.top));
 	}
 	e = game.lvl->GetObjects("shotgun");
-	for (int i = 0; i < e.size(); i++) {
+	for (size_t i = 0; i < e.size(); i++) {
 		lists.bonuses.push_back(new Bonus(config.bonus, 5, e[i].rect.left, e[i].rect.top));
 	}
 	e = game.lvl->GetObjects("machinegun");
-	for (int i = 0; i < e.size(); i++) {
+	for (size_t i = 0; i < e.size(); i++) {
 		lists.bonuses.push_back(new Bonus(config.bonus, 6, e[i].rect.left, e[i].rect.top));
 	}
 }
@@ -80,7 +80,7 @@ void GetEnemys(Config & config, Lists & lists, Game1 & game, Monster & enemy)
 	std::vector<Object> e = game.lvl->GetObjects("normal");
 	String name;
 	int number;
-	for (int i = 0; i < e.size(); i++) {
+	for (size_t i = 0; i < e.size(); i++) {
 		number = (random_number(10));
 		name = config.zombies[number];
 		enemy.normal = new Enemy(name, *game.lvl, e[i].rect.left, e[i].rect.top, enemy.normal_W, enemy.normal_H, "normal");
@@ -89,7 +89,7 @@ void GetEnemys(Config & config, Lists & lists, Game1 & game, Monster & enemy)
 	}
 	e = game.lvl->GetObjects("boss");
 	name = config.boss;
-	for (int i = 0; i < e.size(); i++) {
+	for (size_t i = 0; i < e.size(); i++) {
 		enemy.boss = new Enemy(name, *game.lvl, e[i].rect.left, e[i].rect.top, enemy.boss_W, enemy.boss_H, "boss");
 
 		lists.entities.push_back(enemy.boss);
@@ -134,8 +134,8 @@ void StartGame(Config & config, Game1 & game, Hero & hero, Lists & lists, Info &
 	Clock reload_clock;
 
 	while (game.window->isOpen()) {
-		float time = clock.getElapsedTime().asMicroseconds();
-		float reload_time = reload_clock.getElapsedTime().asMilliseconds();
+		float time = float(clock.getElapsedTime().asMicroseconds());
+		float reload_time = float(reload_clock.getElapsedTime().asMilliseconds());
 		clock.restart();
 		time = time / 10000;
 		sf::Event event;
@@ -226,8 +226,6 @@ int main() {
 		float CurrentFrame = 0;
 		float CurrentFrame1 = 0;
 		float res = 0;
-
-		bool hit;
 
 		StartGame(config, *game, *hero, *lists, info, *shoot, *enemy);
 		return 0;

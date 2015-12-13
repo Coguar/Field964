@@ -18,7 +18,7 @@ void ShowAmmo(RenderWindow & window, Text & text, int & ammo_value, View & view)
 	std::ostringstream playerHealthString;    // объявили переменную
 	playerHealthString << ammo_value;		//занесли в нее число здоровья, то есть формируем строку
 	if (ammo_value == -1) {
-		text.setString("Патроны: Неограничено");
+		text.setString("Патроны: --");
 	}
 	else {
 		text.setString("Патроны:" + playerHealthString.str());//задаем строку тексту и вызываем сформированную выше строку методом .str() 
