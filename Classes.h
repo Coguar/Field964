@@ -3,6 +3,7 @@
 #include "global.h"
 #include "level.h"
 #include <map>
+#include <memory>
 
 using namespace sf;
 
@@ -34,8 +35,8 @@ public:
 	std::vector<Object> obj;//вектор объектов карты
 	PositionObj pos;
 	Properties properties;
-	sf:: Texture* texture = new Texture;
-	sf::Sprite* sprite = new Sprite;
+	std::shared_ptr<Texture> texture = std::make_shared<Texture>();
+	std::shared_ptr<Sprite> sprite = std::make_shared<Sprite>();
 	Entity(sf::Image & image, sf::String Name, float X, float Y, float W, float H) {
 		pos.x = X; pos.y = Y; properties.w = W; properties.h = H; properties.name = Name; properties.moveTimer = 0;
 		properties.speed = 0; properties.health = 100; pos.dx = 0; pos.dy = 0;
@@ -312,8 +313,8 @@ public:
 	PositionObj pos;
 	Properties properties;
 	bool life;
-	sf::Texture* texture = new Texture;
-	sf::Sprite* sprite = new Sprite;
+	std::shared_ptr<Texture> texture = std::make_shared<Texture>();
+	std::shared_ptr<Sprite> sprite = std::make_shared<Sprite>();
 	sf::String name;
 	Image image;
 	Bullet(String F, String Name, Level &lvl, float X, float Y, int W, int H, int dir) {
@@ -370,8 +371,8 @@ public:
 	PositionObj pos;
 	Properties properties;
 
-	sf::Texture* texture = new Texture;
-	sf::Sprite* sprite = new Sprite;
+	std::shared_ptr<Texture> texture = std::make_shared<Texture>();
+	std::shared_ptr<Sprite> sprite = std::make_shared<Sprite>();
 	sf::String name;
 	Image image;
 	Bonus(String F, int name1, float X, float Y) {
@@ -396,8 +397,8 @@ public:
 	float x, y;
 	float w = 512.0;
 	float h = 512.0;
-	sf::Texture* texture = new Texture;
-	sf::Sprite* sprite = new Sprite;
+	std::shared_ptr<Texture> texture = std::make_shared<Texture>();
+	std::shared_ptr<Sprite> sprite = std::make_shared<Sprite>();
 	sf::String name;
 	Image image;
 	Tree(String F, float X, float Y) {
@@ -411,5 +412,26 @@ public:
 	}
 	FloatRect getRect() {
 		return FloatRect(x, y, w, h);
+	}
+};
+
+class Item {
+public:
+	std::string Name;
+	bool activ;
+	float x;
+	float y;
+	sf::String name;
+	Image image;
+	std::shared_ptr<Texture> texture = std::make_shared<Texture>();
+	std::shared_ptr<Sprite> sprite = std::make_shared<Sprite>();
+	Item(String F, float X, float Y) {
+		image.loadFromFile(F);
+		texture->loadFromImage(image);
+		sprite->setTexture(*texture);
+		x = X;
+		y = Y;
+		sprite->setPosition(x, y);
+		activ = false;
 	}
 };

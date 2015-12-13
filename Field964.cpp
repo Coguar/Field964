@@ -8,7 +8,7 @@
 #include "drawMap.h"
 #include "health.h"
 #include "control.h"
-#include <memory>
+//#include <memory>
 #include <iostream>
 #include <sstream>
 #include <fstream>
