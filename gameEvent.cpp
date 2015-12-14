@@ -9,7 +9,7 @@ void eventDropBonus(Lists & lists, Hero & hero, float time, Config & config) {
 		(*lists.it)->update(time);
 		if ((*lists.it)->properties.life == false) {
 			if (random_number(5) == 1) {
-				lists.bonuses.push_back(new Bonus(config.bonus, random_number(3) + 1, (*lists.it)->pos.x, (*lists.it)->pos.y));
+				lists.bonuses.push_back(new Bonus(config.bonus, random_number(6) + 1, (*lists.it)->pos.x, (*lists.it)->pos.y));
 			}
 			lists.it = lists.entities.erase(lists.it);
 		}
@@ -44,13 +44,25 @@ void eventGetBonus(Lists & lists, Hero & hero, float time, float & speed) {
 				speed = 0.1f;
 			}
 			else if ((*lists.bon)->Name == 4) {
-				hero.player->take_uzi = true;
+				hero.player->ammo_uzi += 15;
 			}
 			else if ((*lists.bon)->Name == 5) {
+				hero.player->ammo_machinegun += 30;
+			}
+			else if ((*lists.bon)->Name == 6) {
+				hero.player->ammo_shootgun += 4;
+			}
+			else if ((*lists.bon)->Name == 7) {
+				hero.player->take_uzi = true;
+			}
+			else if ((*lists.bon)->Name == 8) {
 				hero.player->take_shotgun = true;
 			}
-			else {
+			else if ((*lists.bon)->Name == 9) {
 				hero.player->take_machinegun = true;
+			}
+			else {
+				hero.player->take_bucket = true;
 			}
 			lists.bon = lists.bonuses.erase(lists.bon);
 		}

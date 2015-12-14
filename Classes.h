@@ -139,6 +139,7 @@ public:
 		return wall;
 	}
 
+
 	float getX() {	//этим методом будем забирать координату Х	
 		return pos.x;
 	}
@@ -152,10 +153,11 @@ public:
 	FloatRect rect;
 	float x1, y1 = 0;
 	float damage = 20.0;
-	float reload_time = 0.1f;//координаты игрока х и у, высота ширина, ускорение (по х и по у), сама скорость
-	int dir = 0; //направление (direction) движения игрока
-	String File; //файл с расширением
-	Image image;//сфмл изображение
+	float reload_time = 0.1f;
+	int dir = 0; 
+	int quest = 0;
+	String File; 
+	Image image;
 	bool reload = true;
 	enum {pistol, uzi, shotgun, machinegun} weapoon;
 	int gun = 0;
@@ -163,6 +165,7 @@ public:
 	bool take_uzi = false;
 	bool take_shotgun = false;
 	bool take_machinegun = false;
+	bool take_bucket = false;
 
 	float damage_pistol = 10;
 	float damage_uzi = 15;
@@ -234,15 +237,19 @@ public:
 
 
 	void _set_speed() {
+		float speed;
+		if (quest == 4 && take_bucket == true) {
+			speed = properties.speed * 0.5f;
+		}
 		switch (dir) {
-		case 0: pos.dx = properties.speed; pos.dy = 0;   break;
-		case 1: pos.dx = -properties.speed; pos.dy = 0;   break;
-		case 2: pos.dx = 0; pos.dy = properties.speed;   break;
-		case 3: pos.dx = 0; pos.dy = -properties.speed;   break;
-		case 4: pos.dx = float(properties.speed * 0.66); pos.dy = float(properties.speed * 0.66);   break;
-		case 5: pos.dx = float(properties.speed * 0.66); pos.dy = float(-properties.speed * 0.66);   break;
-		case 6: pos.dx = float(-properties.speed * 0.66); pos.dy = float(-properties.speed * 0.66);   break;
-		case 7: pos.dx = float(-properties.speed * 0.66); pos.dy = float(properties.speed * 0.66);   break;
+		case 0: pos.dx = speed; pos.dy = 0;   break;
+		case 1: pos.dx = -speed; pos.dy = 0;   break;
+		case 2: pos.dx = 0; pos.dy = speed;   break;
+		case 3: pos.dx = 0; pos.dy = -speed;   break;
+		case 4: pos.dx = float(speed * 0.66); pos.dy = float(speed * 0.66);   break;
+		case 5: pos.dx = float(speed * 0.66); pos.dy = float(-speed * 0.66);   break;
+		case 6: pos.dx = float(-speed * 0.66); pos.dy = float(-speed * 0.66);   break;
+		case 7: pos.dx = float(-speed * 0.66); pos.dy = float(speed * 0.66);   break;
 		}
 	}
 
@@ -253,7 +260,7 @@ public:
 		_chose_gun();
 		_take_gun();
 		_set_speed();
-
+		_quest_progress(y1, x1);
 		x1 += pos.dx * time;
 		y1 += pos.dy * time;
 
@@ -304,6 +311,29 @@ public:
 			}
 		return wall;
 	}
+
+	void _quest_progress(float y1, float x1) {
+		for (size_t i = 0; i < obj.size(); i++)//проходимся по объектам
+			if (FloatRect(x1 - properties.w / 2, y1 - properties.h / 2, properties.h, properties.w).intersects(obj[i].rect))//проверяем пересечение игрока с объектом
+			{
+				if (obj[i].name == "car" && quest == 0) {
+					quest = 1;
+				}
+				else if (obj[i].name == "gaz" && quest == 1) {
+					quest = 2;
+				}
+				else if (obj[i].name == "bucket" && quest == 2) {
+					quest = 3;
+				}
+				else if (obj[i].name == "colon" && quest == 3) {
+					quest = 4;
+				}
+				else if (obj[i].name == "car" && quest == 4) {
+					quest = 5;
+				}
+			}
+	}
+
 };
 
 class Bullet {
@@ -363,9 +393,14 @@ private:
 	{ { 1, IntRect(0, 0, 32, 32) },
 		{ 2, IntRect(32, 0, 32, 32) },
 		{ 3, IntRect(64, 0, 32, 32) },
-		{ 4, IntRect(0, 32, 32, 32) },
-		{ 5, IntRect(32, 32, 128, 32) },
-		{ 6, IntRect(0, 64, 128, 64) } };
+		{ 4, IntRect(128, 0, 32, 32) },
+		{ 5, IntRect(160, 0, 32, 32) },
+		{ 6, IntRect(192, 0, 32, 32) },
+		{ 7, IntRect(0, 32, 32, 32) },
+		{ 8, IntRect(32, 32, 128, 32) },
+		{ 9, IntRect(0, 64, 128, 64) },
+		{ 10, IntRect(96, 0, 32, 32) }
+	};
 public:
 	int Name;
 	PositionObj pos;
@@ -417,7 +452,7 @@ public:
 
 class Item {
 public:
-	std::string Name;
+	int Name;
 	bool activ;
 	float x;
 	float y;
@@ -425,7 +460,7 @@ public:
 	Image image;
 	std::shared_ptr<Texture> texture = std::make_shared<Texture>();
 	std::shared_ptr<Sprite> sprite = std::make_shared<Sprite>();
-	Item(String F, float X, float Y) {
+	Item(String F, float X, float Y, int name) {
 		image.loadFromFile(F);
 		texture->loadFromImage(image);
 		sprite->setTexture(*texture);
@@ -433,5 +468,6 @@ public:
 		y = Y;
 		sprite->setPosition(x, y);
 		activ = false;
+		Name = name;
 	}
 };

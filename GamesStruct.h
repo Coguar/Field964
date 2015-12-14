@@ -116,4 +116,7 @@ struct Lists
 
 	std::list<Tree*> woods;
 	std::list<Tree*>::iterator wood;
+
+	std::list<Item*> items;
+	std::list<Item*>::iterator item;
 };

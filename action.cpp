@@ -25,7 +25,6 @@ void actionSingleShoot(Lists & lists, Hero & hero, Shoot & shoot, Config & confi
 	float rotation = actionGetRotation(pos.x, pos.y, hero.player->pos.x, hero.player->pos.y);
 
 	shoot.bullet = new Bullet(config.Bullet, "Bullet", *game.lvl, hero.player->pos.x, hero.player->pos.y, 20, 20, hero.player->dir);
-	std::cout << hero.player->pos.y << std::endl;
 	gototarget(shoot.bullet->pos.dx, shoot.bullet->pos.dy, pos.x, pos.y, hero.player->pos.x, hero.player->pos.y);
 	shoot.bullet->sprite->setRotation(rotation);
 	lists.bullets.push_back(shoot.bullet);

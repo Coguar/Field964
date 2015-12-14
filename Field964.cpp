@@ -43,6 +43,7 @@ void GameInit(Config & config, Game1 & game, Hero & hero)
 
 }
 
+
 void InfoInit(Config & config, Info & info) 
 {
 	info.font.loadFromFile(config.font);
@@ -63,15 +64,19 @@ void GetGuns(Config & config, Lists & lists, Game1 & game)
 {
 	std::vector<Object> e = game.lvl->GetObjects("uzi");
 	for (size_t i = 0; i < e.size(); i++) {
-		lists.bonuses.push_back(new Bonus(config.bonus, 4, e[i].rect.left, e[i].rect.top));
+		lists.bonuses.push_back(new Bonus(config.bonus, 7, e[i].rect.left, e[i].rect.top));
 	}
 	e = game.lvl->GetObjects("shotgun");
 	for (size_t i = 0; i < e.size(); i++) {
-		lists.bonuses.push_back(new Bonus(config.bonus, 5, e[i].rect.left, e[i].rect.top));
+		lists.bonuses.push_back(new Bonus(config.bonus, 8, e[i].rect.left, e[i].rect.top));
 	}
 	e = game.lvl->GetObjects("machinegun");
 	for (size_t i = 0; i < e.size(); i++) {
-		lists.bonuses.push_back(new Bonus(config.bonus, 6, e[i].rect.left, e[i].rect.top));
+		lists.bonuses.push_back(new Bonus(config.bonus, 9, e[i].rect.left, e[i].rect.top));
+	}
+	e = game.lvl->GetObjects("bucket");
+	for (size_t i = 0; i < e.size(); i++) {
+		lists.bonuses.push_back(new Bonus(config.bonus, 10, e[i].rect.left, e[i].rect.top));
 	}
 }
 
