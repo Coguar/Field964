@@ -2,14 +2,21 @@
 #include "GamesStruct.h"
 #include "randomValue.h"
 #include "gameEvent.h"
-#include "distantion.h"
+#include "GameMath.h"
+#include <algorithm>
 
+namespace
+{
+	bool _is_crash(Bullet * bull) {
+		return bull->life == false;
+	}
+}
 void eventDropBonus(Lists & lists, Hero & hero, float time, Config & config) {
 	for (lists.it = lists.entities.begin(); lists.it != lists.entities.end();) {
 		(*lists.it)->update(time);
 		if ((*lists.it)->properties.life == false) {
 			if (random_number(5) == 1) {
-				lists.bonuses.push_back(new Bonus(config.bonus, random_number(6) + 1, (*lists.it)->pos.x, (*lists.it)->pos.y));
+				lists.bonuses.push_back(new Bonus(config.bonus, random_number(6) + 1, (*lists.it)->pos.xy.x, (*lists.it)->pos.xy.y));
 			}
 			lists.it = lists.entities.erase(lists.it);
 		}
@@ -20,14 +27,7 @@ void eventDropBonus(Lists & lists, Hero & hero, float time, Config & config) {
 }
 
 void eventBulletDestroy(Lists & lists, Hero & hero, float time) {
-	for (lists.bull = lists.bullets.begin(); lists.bull != lists.bullets.end(); ) {
-		if ((*lists.bull)->life == false) {
-			lists.bull = lists.bullets.erase(lists.bull);
-		}
-		else {
-			lists.bull++;
-		}
-	}
+	lists.bullets.erase( remove_if(lists.bullets.begin(), lists.bullets.end(), _is_crash), lists.bullets.end());
 }
 
 void eventGetBonus(Lists & lists, Hero & hero, float time, float & speed) {
@@ -73,14 +73,10 @@ void eventGetBonus(Lists & lists, Hero & hero, float time, float & speed) {
 }
 
 void eventHitZombie(Lists & lists, Hero & hero, float time) {
-	for (lists.bull = lists.bullets.begin(); lists.bull != lists.bullets.end();) {
+	for (lists.bull = lists.bullets.begin(); lists.bull != lists.bullets.end(); lists.bull++) {
 		if ((*lists.it)->getRect().intersects((*lists.bull)->getRect())) {
 			(*lists.it)->properties.health = (*lists.it)->properties.health - int(hero.player->damage);
-			lists.bull = lists.bullets.erase(lists.bull);
-		}
-
-		else {
-			lists.bull++;
+			(*lists.bull)->life = false;
 		}
 	}
 }
@@ -103,12 +99,12 @@ void eventZombieHustle(Lists & lists, Hero & hero) {
 		if ((*lists.it2)->getRect() != (*lists.it)->getRect()) {
 			if ((*lists.it2)->getRect().intersects((*lists.it)->getRect())) {
 				if (calculateDistantion(hero.player->getX(), hero.player->getY(), (*lists.it)->getX(), (*lists.it)->getY()) > calculateDistantion(hero.player->getX(), hero.player->getY(), (*lists.it2)->getX(), (*lists.it2)->getY())) {
-					(*lists.it)->pos.x = (*lists.it)->pos.x - (*lists.it)->Xdir;
-					(*lists.it)->pos.y = (*lists.it)->pos.y - (*lists.it)->Ydir;
+					(*lists.it)->pos.xy.x = (*lists.it)->pos.xy.x - (*lists.it)->Xdir;
+					(*lists.it)->pos.xy.y = (*lists.it)->pos.xy.y - (*lists.it)->Ydir;
 				}
 				else {
-					(*lists.it2)->pos.x = (*lists.it2)->pos.x - (*lists.it2)->Xdir;
-					(*lists.it2)->pos.y = (*lists.it2)->pos.y - (*lists.it2)->Ydir;
+					(*lists.it2)->pos.xy.x = (*lists.it2)->pos.xy.x - (*lists.it2)->Xdir;
+					(*lists.it2)->pos.xy.y = (*lists.it2)->pos.xy.y - (*lists.it2)->Ydir;
 				}
 			}
 

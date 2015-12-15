@@ -5,7 +5,6 @@
 //#include <SFML/Audio.hpp>
 #include "map.h"
 #include "cam.h"
-#include "drawMap.h"
 #include "health.h"
 #include "control.h"
 //#include <memory>
@@ -14,9 +13,8 @@
 #include <fstream>
 #include <string>
 #include <vector>
-#include "distantion.h"
+#include "GameMath.h"
 #include "GoToTarget.h"
-#include "sprite_position.h"
 #include "GamesStruct.h"
 #include "randomValue.h"
 #include "gameEvent.h"
@@ -33,7 +31,6 @@ void GameInit(Config & config, Game1 & game, Hero & hero)
 	game.lvl = new Level;
 	game.lvl->LoadFromFile(config.map);
 
-	//hero->player_obj = new Object;
 	hero.player_obj = game.lvl->GetObject("player1");
 
 	hero.player = new Player(config.imageHeroPistol, hero.name, *game.lvl, hero.player_obj.rect.left, hero.player_obj.rect.top, hero.W, hero.H, hero.health);
@@ -139,6 +136,7 @@ void StartGame(Config & config, Game1 & game, Hero & hero, Lists & lists, Info &
 	Clock reload_clock;
 
 	while (game.window->isOpen()) {
+		std::cout << hero.player->damage << std::endl;
 		float time = float(clock.getElapsedTime().asMicroseconds());
 		float reload_time = float(reload_clock.getElapsedTime().asMilliseconds());
 		clock.restart();
@@ -148,7 +146,7 @@ void StartGame(Config & config, Game1 & game, Hero & hero, Lists & lists, Info &
 		Vector2i pixelPos = Mouse::getPosition(*game.window);
 		Vector2f pos = game.window->mapPixelToCoords(pixelPos);
 
-		hero.player->sprite->setRotation(actionGetRotation(pos.x, pos.y, hero.player->pos.x, hero.player->pos.y) + 90);
+		hero.player->sprite->setRotation(actionGetRotation(pos.x, pos.y, hero.player->pos.xy.x, hero.player->pos.xy.y) + 90);
 		while (game.window->pollEvent(event)) {
 			if (event.type == sf::Event::Closed) {
 				game.window->close();
@@ -190,7 +188,7 @@ void StartGame(Config & config, Game1 & game, Hero & hero, Lists & lists, Info &
 		}
 		for (lists.it = lists.entities.begin(); lists.it != lists.entities.end(); lists.it++) {
 			gototarget((*lists.it)->Xdir, (*lists.it)->Ydir, hero.player->getX(), hero.player->getY(), (*lists.it)->getX(), (*lists.it)->getY());
-			(*lists.it)->sprite->setRotation(actionGetRotation(hero.player->pos.x, hero.player->pos.y, (*lists.it)->pos.x, (*lists.it)->pos.y) + 90);
+			(*lists.it)->sprite->setRotation(actionGetRotation(hero.player->pos.xy.x, hero.player->pos.xy.y, (*lists.it)->pos.xy.x, (*lists.it)->pos.xy.y) + 90);
 
 			eventZombieHustle(lists, hero);
 			eventHitZombie(lists, hero, time);
@@ -205,7 +203,7 @@ void StartGame(Config & config, Game1 & game, Hero & hero, Lists & lists, Info &
 			GetEnemys(config, lists, game, enemy);
 		}
 		eventBulletDestroy(lists, hero, time);
-		getCoord(hero.player->pos.x, hero.player->pos.y, *game.view1);
+		getCoord(hero.player->pos.xy.x, hero.player->pos.xy.y, *game.view1);
 		eventDropBonus(lists, hero, time, config);
 		DrawingGame(config, game, hero, lists, info, time);
 	}

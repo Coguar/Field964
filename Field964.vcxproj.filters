@@ -33,9 +33,6 @@
     <ClInclude Include="control.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="distantion.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="GoToTarget.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -44,9 +41,6 @@
     </ClInclude>
     <ClInclude Include="..\TinyXML\tinyxml.h">
       <Filter>Resource Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Classes.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="GamesStruct.h">
       <Filter>Header Files</Filter>
@@ -63,6 +57,30 @@
     <ClInclude Include="action.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="GameMath.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="classPlayer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="classGlobal.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Classes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="classEnemy.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="classBullet.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="classBonus.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="classTree.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -75,9 +93,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="control.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="distantion.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="GoToTarget.cpp">
@@ -106,6 +121,24 @@
     </ClCompile>
     <ClCompile Include="action.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GameMath.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="classPlayer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="classEnemy.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="classBullet.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="classBonus.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="classTree.cpp">
+      <Filter>Header Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

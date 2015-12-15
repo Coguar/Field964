@@ -15,17 +15,17 @@ float actionGetRotation(float to_x, float to_y, float from_x, float from_y) {
 
 void actionShotgunShoot(Lists & lists, Hero & hero, Shoot & shoot, Config & config, Game1 & game, Vector2f & pos) {
 	for (int i = 0; i < 7; i++) {
-		shoot.bullet = new Bullet(config.Shot, "Bullet", *game.lvl, hero.player->pos.x, hero.player->pos.y, 10, 10, hero.player->dir);
-		gototarget(shoot.bullet->pos.dx, shoot.bullet->pos.dy, pos.x - 20 + random_number(40), pos.y - 20 + random_number(40), hero.player->pos.x, hero.player->pos.y);
+		shoot.bullet = new Bullet(config.Shot, "Bullet", *game.lvl, hero.player->pos.xy.x, hero.player->pos.xy.y, 10, 10, hero.player->dir);
+		gototarget(shoot.bullet->pos.dx, shoot.bullet->pos.dy, pos.x - 20 + random_number(40), pos.y - 20 + random_number(40), hero.player->pos.xy.x, hero.player->pos.xy.y);
 		lists.bullets.push_back(shoot.bullet);
 	}
 }
 
 void actionSingleShoot(Lists & lists, Hero & hero, Shoot & shoot, Config & config, Game1 & game, Vector2f & pos) {
-	float rotation = actionGetRotation(pos.x, pos.y, hero.player->pos.x, hero.player->pos.y);
+	float rotation = actionGetRotation(pos.x, pos.y, hero.player->pos.xy.x, hero.player->pos.xy.y);
 
-	shoot.bullet = new Bullet(config.Bullet, "Bullet", *game.lvl, hero.player->pos.x, hero.player->pos.y, 20, 20, hero.player->dir);
-	gototarget(shoot.bullet->pos.dx, shoot.bullet->pos.dy, pos.x, pos.y, hero.player->pos.x, hero.player->pos.y);
+	shoot.bullet = new Bullet(config.Bullet, "Bullet", *game.lvl, hero.player->pos.xy.x, hero.player->pos.xy.y, 20, 20, hero.player->dir);
+	gototarget(shoot.bullet->pos.dx, shoot.bullet->pos.dy, pos.x, pos.y, hero.player->pos.xy.x, hero.player->pos.xy.y);
 	shoot.bullet->sprite->setRotation(rotation);
 	lists.bullets.push_back(shoot.bullet);
 }
