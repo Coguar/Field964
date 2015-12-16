@@ -29,18 +29,18 @@ void Enemy::update(float time) {
 }
 
 FloatRect Enemy::getRect() {
-	return FloatRect(pos.xy.x - properties.w / 2, pos.xy.y - properties.h / 2, properties.w, properties.h);
+	return FloatRect(pos.xy.x - properties.w / 4, pos.xy.y - properties.h / 4, properties.w / 2, properties.h / 2);
 }
 
 
 FloatRect Enemy::getRect1() {
-	return FloatRect(x1 - properties.w / 2, y1 - properties.h / 2, properties.w, properties.h);
+	return FloatRect(x1 - properties.w / 4, y1 - properties.h / 4, properties.w / 2, properties.h / 2);
 }
 
 bool Enemy::map_event(float y1, float x1) {
 	bool wall = 0;
 	for (size_t i = 0; i < obj.size(); i++)//проходимся по объектам
-		if (FloatRect(x1 - properties.w / 2, y1 - properties.h / 2, properties.h, properties.w).intersects(obj[i].rect))//проверяем пересечение игрока с объектом
+		if (FloatRect(x1 - properties.w / 4, y1 - properties.h / 4, properties.h / 2, properties.w / 2).intersects(obj[i].rect))//проверяем пересечение игрока с объектом
 		{
 			if (obj[i].name == "solid") {
 				wall = true;

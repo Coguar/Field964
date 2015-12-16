@@ -4,6 +4,7 @@
 #include "gameEvent.h"
 #include "GameMath.h"
 #include <algorithm>
+#include <functional>
 
 namespace
 {
@@ -12,64 +13,47 @@ namespace
 	}
 }
 void eventDropBonus(Lists & lists, Hero & hero, float time, Config & config) {
-	for (lists.it = lists.entities.begin(); lists.it != lists.entities.end();) {
-		(*lists.it)->update(time);
-		if ((*lists.it)->properties.life == false) {
+	for (auto it : lists.entities) {
+		it->update(time);
+		if (it->properties.life == false) {
 			if (random_number(5) == 1) {
-				lists.bonuses.push_back(new Bonus(config.bonus, random_number(6) + 1, (*lists.it)->pos.xy.x, (*lists.it)->pos.xy.y));
+				lists.bonuses.push_back(new Bonus(config.bonus, random_number(6) + 1, it->pos.xy.x, it->pos.xy.y));
 			}
-			lists.it = lists.entities.erase(lists.it);
-		}
-		else {
-			lists.it++;
 		}
 	}
+	auto is_die = [](Enemy *enemy) { return !(enemy->properties.life); };
+	lists.entities.erase(remove_if(lists.entities.begin(), lists.entities.end(), is_die), lists.entities.end());
+
 }
 
 void eventBulletDestroy(Lists & lists, Hero & hero, float time) {
-	lists.bullets.erase( remove_if(lists.bullets.begin(), lists.bullets.end(), _is_crash), lists.bullets.end());
+	auto is_crash = [](Bullet *bull) { return !(bull->life); };
+	lists.bullets.erase( remove_if(lists.bullets.begin(), lists.bullets.end(), is_crash), lists.bullets.end());
+}
+
+bool _bonus_type(Bonus * bon, Hero & hero, float & speed) {
+	if (bon->getRect().intersects(hero.player->getRect())) {
+		switch (bon->Name)
+		{
+		case 1: hero.player->bonus_damage += 1.0; break;
+		case 2: hero.player->properties.health += 10; break;
+		case 3: speed = 0.1f; break;
+		case 4: hero.player->ammo_uzi += 15; break;
+		case 5: hero.player->ammo_machinegun += 30; break;
+		case 6: hero.player->ammo_shootgun += 4; break;
+		case 7: hero.player->take_uzi = true; break;
+		case 8: hero.player->take_shotgun = true; break;
+		case 9: hero.player->take_machinegun = true; break;
+		case 10: hero.player->take_bucket = true; break;
+		}
+		return true;
+	}
+	return false;
 }
 
 void eventGetBonus(Lists & lists, Hero & hero, float time, float & speed) {
-	for (lists.bon = lists.bonuses.begin(); lists.bon != lists.bonuses.end();) {
-		if ((*lists.bon)->getRect().intersects(hero.player->getRect())) {
-			std::cout << (*lists.bon)->Name;
-			if ((*lists.bon)->Name == 1) {
-				hero.player->bonus_damage += 1.0;
-			}
-			else if ((*lists.bon)->Name == 2) {
-				hero.player->properties.health += 10;
-			}
-			else if ((*lists.bon)->Name == 3) {
-				speed = 0.1f;
-			}
-			else if ((*lists.bon)->Name == 4) {
-				hero.player->ammo_uzi += 15;
-			}
-			else if ((*lists.bon)->Name == 5) {
-				hero.player->ammo_machinegun += 30;
-			}
-			else if ((*lists.bon)->Name == 6) {
-				hero.player->ammo_shootgun += 4;
-			}
-			else if ((*lists.bon)->Name == 7) {
-				hero.player->take_uzi = true;
-			}
-			else if ((*lists.bon)->Name == 8) {
-				hero.player->take_shotgun = true;
-			}
-			else if ((*lists.bon)->Name == 9) {
-				hero.player->take_machinegun = true;
-			}
-			else {
-				hero.player->take_bucket = true;
-			}
-			lists.bon = lists.bonuses.erase(lists.bon);
-		}
-		else {
-			lists.bon++;
-		}
-	}
+	std::function<bool(Bonus*)> func(std::bind(_bonus_type, std::placeholders::_1, hero, speed));
+	lists.bonuses.erase(remove_if(lists.bonuses.begin(), lists.bonuses.end(), func), lists.bonuses.end());
 }
 
 void eventHitZombie(Lists & lists, Hero & hero, float time) {
@@ -95,16 +79,16 @@ void eventZombieAtack(Lists & lists, Hero & hero, float time) {
 }
 
 void eventZombieHustle(Lists & lists, Hero & hero) {
-	for (lists.it2 = lists.entities.begin(); lists.it2 != lists.entities.end(); lists.it2++) {
-		if ((*lists.it2)->getRect() != (*lists.it)->getRect()) {
-			if ((*lists.it2)->getRect().intersects((*lists.it)->getRect())) {
-				if (calculateDistantion(hero.player->getX(), hero.player->getY(), (*lists.it)->getX(), (*lists.it)->getY()) > calculateDistantion(hero.player->getX(), hero.player->getY(), (*lists.it2)->getX(), (*lists.it2)->getY())) {
+	for (Enemy * it2 : lists.entities) {
+		if (it2->getRect() != (*lists.it)->getRect()) {
+			if (it2->getRect().intersects((*lists.it)->getRect())) {
+				if (calculateDistantion(hero.player->getX(), hero.player->getY(), (*lists.it)->getX(), (*lists.it)->getY()) > calculateDistantion(hero.player->getX(), hero.player->getY(), it2->getX(), it2->getY())) {
 					(*lists.it)->pos.xy.x = (*lists.it)->pos.xy.x - (*lists.it)->Xdir;
 					(*lists.it)->pos.xy.y = (*lists.it)->pos.xy.y - (*lists.it)->Ydir;
 				}
 				else {
-					(*lists.it2)->pos.xy.x = (*lists.it2)->pos.xy.x - (*lists.it2)->Xdir;
-					(*lists.it2)->pos.xy.y = (*lists.it2)->pos.xy.y - (*lists.it2)->Ydir;
+					it2->pos.xy.x = it2->pos.xy.x - it2->Xdir;
+					it2->pos.xy.y = it2->pos.xy.y - it2->Ydir;
 				}
 			}
 

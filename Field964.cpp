@@ -136,7 +136,6 @@ void StartGame(Config & config, Game1 & game, Hero & hero, Lists & lists, Info &
 	Clock reload_clock;
 
 	while (game.window->isOpen()) {
-		std::cout << hero.player->damage << std::endl;
 		float time = float(clock.getElapsedTime().asMicroseconds());
 		float reload_time = float(reload_clock.getElapsedTime().asMilliseconds());
 		clock.restart();
