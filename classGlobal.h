@@ -3,10 +3,7 @@
 #include "level.h"
 #include <map>
 #include <memory>
-
-/*#include "classPlayer.h"
-#include "classEnemy.h"
-#include "classBullet.h"*/
+#include "classCollisionChecker.h"
 
 using namespace sf;
 

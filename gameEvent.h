@@ -1,6 +1,6 @@
 #pragma once
 
-void eventDropBonus(Lists & lists, Hero & hero, float time, Config & config);
+void eventDropBonus(Lists & lists, Hero & hero, float time, Config & config, CollisionChecker & checker);
 
 void eventBulletDestroy(Lists & lists, Hero & hero, float time);
 

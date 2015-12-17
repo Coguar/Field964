@@ -1,6 +1,6 @@
 #include "classBullet.h"
 
-void Bullet::update(float time)
+void Bullet::update(float time, CollisionChecker & checker)
 {
 
 	pos.xy.x += pos.dx * time * 10;
@@ -9,13 +9,10 @@ void Bullet::update(float time)
 	if (pos.xy.x <= 0) pos.xy.x = 1;
 	if (pos.xy.y <= 0) pos.xy.y = 1;
 
-	for (size_t i = 0; i < obj.size(); i++) {
-		if (getRect().intersects(obj[i].rect))
+	if(checker.map_event(getRect()) == true)
 		{
 			life = false;
 		}
-	}
-
 	sprite->setPosition(pos.xy.x + properties.w / 2, pos.xy.y + properties.h / 2);
 }
 

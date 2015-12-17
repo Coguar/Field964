@@ -171,6 +171,7 @@ copy "C:\Users\Степан\Documents\Visual Studio 2015\SFML\bin\sfml-audio-2.d
     <ClInclude Include="cam.h" />
     <ClInclude Include="classBonus.h" />
     <ClInclude Include="classBullet.h" />
+    <ClInclude Include="classCollisionChecker.h" />
     <ClInclude Include="classEnemy.h" />
     <ClInclude Include="Classes.h" />
     <ClInclude Include="classGlobal.h" />
@@ -195,6 +196,7 @@ copy "C:\Users\Степан\Documents\Visual Studio 2015\SFML\bin\sfml-audio-2.d
     <ClCompile Include="action.cpp" />
     <ClCompile Include="classBonus.cpp" />
     <ClCompile Include="classBullet.cpp" />
+    <ClCompile Include="classCollisionChecker.cpp" />
     <ClCompile Include="classEnemy.cpp" />
     <ClCompile Include="classPlayer.cpp" />
     <ClCompile Include="classTree.cpp" />

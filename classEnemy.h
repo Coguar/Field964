@@ -6,12 +6,12 @@ public:
 	FloatRect rect;
 	bool player_contact = false;
 	bool contact = false;
-	float target_x, target_y, x1, y1 = 0; //координаты игрока х и у, высота ширина, ускорение (по х и по у), сама скорость
+	Vector2f target_xy;; 
+	Vector2f xy1;
 	float Xdir, Ydir = 0; //направление (direction) движения игрока
 	String File; //файл с расширением
 	Image image;//сфмл изображение
-	Enemy(String F, Level &lvl, float X, float Y, float W, float H, String bot_name) :Entity(image, bot_name, X, Y, W, H) {
-		obj = lvl.GetAllObjects();
+	Enemy(String F, float X, float Y, float W, float H, String bot_name) :Entity(image, bot_name, X, Y, W, H) {
 		if (bot_name == "normal") {
 			properties.health = 100;
 			properties.speed = 0.1f;
@@ -40,7 +40,7 @@ public:
 		}
 
 	}
-	void update(float time);
+	void update(float time, CollisionChecker & checker);
 
 	FloatRect getRect();
 

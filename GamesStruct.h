@@ -39,11 +39,11 @@ struct Config {
 };
 
 struct Game1 //структура в GameStruct
-{
-	sf::RenderWindow *window;
-	sf::View *view1;
-	sf::View *view2;
-	Level *lvl;
+{	
+	std::shared_ptr<RenderWindow> window;
+	std::shared_ptr<View> view1;
+	std::shared_ptr<Level> lvl;
+	std::shared_ptr<CollisionChecker> wallsChecker;
 	float timer = 0;
 	float speed_game = 1;
 
@@ -52,7 +52,7 @@ struct Game1 //структура в GameStruct
 
 struct Hero
 {
-	Player* player;
+	std::shared_ptr<Player> player;
 	Object player_obj = Object();
 	std::string name = "Player1";
 	float H = 71.0;
@@ -61,21 +61,22 @@ struct Hero
 };
 
 struct Shoot {
-	Bullet * bullet;
+	std::shared_ptr<Bullet> bullet;
 	float H = 20;
 	float W = 20;
 };
 
 struct Monster
 {
-	Enemy* normal;
+
+	std::shared_ptr<Enemy> normal;
 	Object monster_obj= Object();
 	std::vector<Object> e;
 	float normal_H =71.0;
 	float normal_W = 71.0;
 	int normal_health = 150;
 
-	Enemy* boss;
+	std::shared_ptr<Enemy> boss;
 	float boss_H = 256.0;
 	float boss_W = 256.0;
 	int boss_health = 950;
@@ -104,19 +105,16 @@ struct sounds
 
 struct Lists
 {
-	std::list<Enemy*>  entities;//создаю список, сюда буду кидать объекты.например врагов.
-	std::list<Enemy*>::iterator it;//итератор чтобы проходить по эл-там списка
-	std::list<Enemy*>::iterator it2;
+	std::list<std::shared_ptr<Enemy>>  entities;//создаю список, сюда буду кидать объекты.например врагов.
+	std::list<std::shared_ptr<Enemy>>::iterator enemy;
+	std::list<std::shared_ptr<Enemy>>::iterator otherEnemy;
 
-	std::list<Bullet*> bullets;
-	std::list<Bullet*>::iterator bull;
+	std::list<std::shared_ptr<Bullet>> bullets;
+	std::list<std::shared_ptr<Bullet>>::iterator bull;
 
-	std::list<Bonus*> bonuses;
-	std::list<Bonus*>::iterator bon;
+	std::list<std::shared_ptr<Bonus>> bonuses;
+	std::list<std::shared_ptr<Bonus>>::iterator bon;
 
-	std::list<Tree*> woods;
-	std::list<Tree*>::iterator wood;
-
-	/*std::list<Item*> items;
-	std::list<Item*>::iterator item;*/
+	std::list<std::shared_ptr<Tree>> woods;
+	std::list<std::shared_ptr<Tree>>::iterator wood;
 };

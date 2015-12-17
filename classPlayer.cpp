@@ -101,7 +101,7 @@ void Player::_set_speed() {
 	}
 }
 
-void Player::update(float time) {
+void Player::update(float time, CollisionChecker & checker) {
 	x1 = pos.xy.x;
 	y1 = pos.xy.y;
 
@@ -112,7 +112,7 @@ void Player::update(float time) {
 	x1 += pos.dx * time;
 	y1 += pos.dy * time;
 
-	if (_map_event(y1, x1) == false) {
+	if (checker.map_event(getRect1()) == false) {
 		pos.xy.x = x1;
 		pos.xy.y = y1;
 	}

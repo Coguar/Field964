@@ -3,7 +3,6 @@
 
 class Bullet {
 public:
-	std::vector<Object> obj;
 	int direction;
 	PositionObj pos;
 	Properties properties;
@@ -12,7 +11,7 @@ public:
 	std::shared_ptr<Sprite> sprite;
 	sf::String name;
 	Image image;
-	Bullet(String F, String Name, Level &lvl, float X, float Y, int W, int H, int dir) {
+	Bullet(String F, String Name, float X, float Y, int W, int H, int dir) {
 		texture = std::make_shared<Texture>();
 		sprite = std::make_shared<Sprite>();
 		image.loadFromFile(F);
@@ -20,7 +19,6 @@ public:
 		texture->loadFromImage(image);
 		sprite->setTexture(*texture);
 
-		obj = lvl.GetObjects("solid");
 		pos.xy.x = X;
 		pos.xy.y = Y;
 		direction = dir;
@@ -30,7 +28,7 @@ public:
 	}
 
 
-	void update(float time);
+	void update(float time, CollisionChecker & checker);
 
 	FloatRect getRect();
 };

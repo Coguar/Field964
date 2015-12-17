@@ -32,8 +32,7 @@ public:
 
 	int choose_gun = 1;
 
-	Player(String F, String Name, Level &lev, float X, float Y, float W, float H, int health_point) :Entity(image, Name, X, Y, W, H) {  //Конструктор с параметрами(формальными) для класса Player. При создании объекта класса мы будем задавать имя файла, координату Х и У, ширину и высоту
-		obj = lev.GetAllObjects();
+	Player(String F, String Name, float X, float Y, float W, float H, int health_point) :Entity(image, Name, X, Y, W, H) {  //Конструктор с параметрами(формальными) для класса Player. При создании объекта класса мы будем задавать имя файла, координату Х и У, ширину и высоту
 
 		properties.health = health_point;
 		File = F;//имя файла+расширение
@@ -53,7 +52,7 @@ public:
 
 	void _set_speed();
 
-	void update(float time);
+	void update(float time, CollisionChecker & checker);
 
 	FloatRect getRect();
 

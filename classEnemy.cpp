@@ -1,20 +1,19 @@
 #include "classEnemy.h"
 
-void Enemy::update(float time) {
-	x1 = pos.xy.x;
-	y1 = pos.xy.y;
+void Enemy::update(float time, CollisionChecker & checker) {
+	xy1 = pos.xy;
 	if (properties.health <= 0) {
 		properties.life = false;
 	}
 	if (properties.life == true) {
-		x1 += Xdir * time;
+		xy1.x += Xdir * time;
 
-		if (map_event(pos.xy.y, x1) == false && player_contact == false && contact == false) {
-			pos.xy.x = x1;
+		if (checker.map_event(FloatRect(pos.xy.y, xy1.x, properties.h / 2, properties.w / 2)) == false && player_contact == false && contact == false) {
+			pos.xy.x = xy1.x;
 		}
-		y1 += Ydir * time;
-		if (map_event(y1, pos.xy.x) == false && player_contact == false && contact == false) {
-			pos.xy.y = y1;
+		xy1.y += Ydir * time;
+		if (checker.map_event(FloatRect(xy1.y, pos.xy.x, properties.h / 2, properties.w / 2)) == false && player_contact == false && contact == false) {
+			pos.xy.y = xy1.y;
 		}
 
 		if (player_contact == true) {
@@ -34,7 +33,7 @@ FloatRect Enemy::getRect() {
 
 
 FloatRect Enemy::getRect1() {
-	return FloatRect(x1 - properties.w / 4, y1 - properties.h / 4, properties.w / 2, properties.h / 2);
+	return FloatRect(xy1.x - properties.w / 4, xy1.y - properties.h / 4, properties.w / 2, properties.h / 2);
 }
 
 bool Enemy::map_event(float y1, float x1) {
