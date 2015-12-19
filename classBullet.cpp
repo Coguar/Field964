@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "classBullet.h"
 
 void Bullet::update(float time, CollisionChecker & checker)

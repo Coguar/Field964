@@ -42,9 +42,9 @@ bool _bonus_type(std::shared_ptr<Bonus> bon, Hero & hero, float & speed) {
 		case 4: hero.player->ammo_uzi += 15; break;
 		case 5: hero.player->ammo_machinegun += 30; break;
 		case 6: hero.player->ammo_shootgun += 4; break;
-		case 7: hero.player->take_uzi = true; break;
-		case 8: hero.player->take_shotgun = true; break;
-		case 9: hero.player->take_machinegun = true; break;
+		case 7: hero.player->m_Guns.push_back(hero.player->uzi); std::sort(hero.player->m_Guns.begin(), hero.player->m_Guns.end()); break;
+		case 8: hero.player->m_Guns.push_back(hero.player->shotgun); std::sort(hero.player->m_Guns.begin(), hero.player->m_Guns.end()); break;
+		case 9: hero.player->m_Guns.push_back(hero.player->machinegun); std::sort(hero.player->m_Guns.begin(), hero.player->m_Guns.end()); break;
 		case 10: hero.player->take_bucket = true; break;
 		}
 		return true;

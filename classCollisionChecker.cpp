@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "classCollisionChecker.h"
 
 bool CollisionChecker::map_event(FloatRect & rect) {

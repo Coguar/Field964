@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "classTree.h"
 
 FloatRect Tree::getRect() {

@@ -33,7 +33,7 @@ public:
 		pos.xy.x = X;
 		pos.xy.y = Y;
 		Name = name1;
-		sprite->setTextureRect(bonus_rect[name1]);
+		sprite->setTextureRect(bonus_rect[Name]);
 		sprite->setPosition(pos.xy.x, pos.xy.y);
 		sprite->setOrigin(properties.w / 2, properties.h / 2);
 	}

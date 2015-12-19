@@ -107,8 +107,8 @@ void DrawingGame(Config & config, Game1 & game, Hero & hero, Lists & lists, Info
 
 	hero.player->update(time, *game.wallsChecker);
 
-	for (lists.bon = lists.bonuses.begin(); lists.bon != lists.bonuses.end();lists.bon++) {
-		game.window->draw(*(*lists.bon)->sprite);
+	for (std::shared_ptr<Bonus> bon : lists.bonuses) {
+		game.window->draw(*bon->sprite);
 	}
 
 	for (std::shared_ptr<Enemy> enemy: lists.entities) {
@@ -116,14 +116,13 @@ void DrawingGame(Config & config, Game1 & game, Hero & hero, Lists & lists, Info
 	}
 
 
-	for (lists.bull = lists.bullets.begin(); lists.bull != lists.bullets.end(); ) {
-		(*lists.bull)->update(time, *game.wallsChecker);
-		game.window->draw(*(*lists.bull)->sprite);
-		lists.bull++;
+	for (std::shared_ptr<Bullet> bull  : lists.bullets ) {
+		bull->update(time, *game.wallsChecker);
+		game.window->draw(*bull->sprite);
 	}
 	game.window->draw(*hero.player->sprite);
-	for (lists.wood = lists.woods.begin(); lists.wood != lists.woods.end(); lists.wood++) {
-		game.window->draw(*(*lists.wood)->sprite);
+	for (std::shared_ptr<Tree> plant : lists.woods) {
+		game.window->draw(*plant->sprite);
 	}
 	ShowHealth(*game.window, *info.text, hero.player->properties.health, *game.view1);
 	ShowAmmo(*game.window, *info.text, hero.player->ammo, *game.view1);
@@ -162,7 +161,7 @@ void StartGame(Config & config, Game1 & game, Hero & hero, Lists & lists, Info &
 			if (event.type == Event::MouseWheelMoved) {
 				if (event.mouseWheel.delta == 1) {
 					hero.player->choose_gun = 1;
-					if (hero.player->gun < 3) {
+					if (hero.player->gun < hero.player->m_Guns.size() - 1) {
 						hero.player->gun += 1;
 					}
 					else {
@@ -175,7 +174,7 @@ void StartGame(Config & config, Game1 & game, Hero & hero, Lists & lists, Info &
 						hero.player->gun -= 1;
 					}
 					else {
-						hero.player->gun = 3;
+						hero.player->gun = hero.player->m_Guns.size() - 1;
 					}
 				}
 			}

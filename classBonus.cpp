@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "classBonus.h"
 
 FloatRect Bonus::getRect() {

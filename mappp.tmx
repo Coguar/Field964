@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="200" height="100" tilewidth="32" tileheight="32" nextobjectid="149">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="200" height="100" tilewidth="32" tileheight="32" nextobjectid="152">
  <tileset firstgid="1" name="tiled" tilewidth="32" tileheight="32" tilecount="1024">
   <image source="files/img/tiled.png" width="1024" height="1024"/>
  </tileset>
@@ -20084,6 +20084,9 @@
   <object id="146" name="solid" x="565" y="2635.33" width="200.333" height="450"/>
   <object id="147" name="solid" x="365" y="2628.67" width="100.333" height="106"/>
   <object id="148" name="solid" x="6134.33" y="1779.33" width="83" height="232.667"/>
+  <object id="149" name="normal" x="529.333" y="416.485" width="208" height="264"/>
+  <object id="150" name="normal" x="750.545" y="307.394" width="208" height="264"/>
+  <object id="151" name="normal" x="847.515" y="852.848" width="208" height="264"/>
  </objectgroup>
  <layer name="Слой тайлов 2" width="200" height="100">
   <data>

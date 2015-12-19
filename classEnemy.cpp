@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "classEnemy.h"
 
 void Enemy::update(float time, CollisionChecker & checker) {
@@ -6,13 +7,13 @@ void Enemy::update(float time, CollisionChecker & checker) {
 		properties.life = false;
 	}
 	if (properties.life == true) {
-		xy1.x += Xdir * time;
 
-		if (checker.map_event(FloatRect(pos.xy.y, xy1.x, properties.h / 2, properties.w / 2)) == false && player_contact == false && contact == false) {
+		xy1.x += Xdir * time;
+		if (checker.map_event(getRect1()) == false && player_contact == false ) {
 			pos.xy.x = xy1.x;
 		}
 		xy1.y += Ydir * time;
-		if (checker.map_event(FloatRect(xy1.y, pos.xy.x, properties.h / 2, properties.w / 2)) == false && player_contact == false && contact == false) {
+		if (checker.map_event(getRect1()) == false && player_contact == false ) {
 			pos.xy.y = xy1.y;
 		}
 

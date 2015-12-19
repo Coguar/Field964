@@ -1,23 +1,36 @@
 #pragma once
 #include "classGlobal.h"
+#include <vector>
 
 class Player :public Entity { // класс Игрока
 public:
 	FloatRect rect;
-	float x1, y1 = 0;
+	Vector2f xy1;
 	float damage = 20.0;
 	float reload_time = 0.1f;
 	int dir = 0;
-	int quest = 0;
+	enum direction { left, right, up, down, u_left, u_right, d_left, d_right }step_to;
+	std::map<int, direction> dir_variant = {
+		{0, left},
+		{ 1, right },
+		{ 2, up },
+		{ 3, down },
+		{ 4, u_left },
+		{ 5, u_right },
+		{ 6, d_left },
+		{ 7, d_right }
+	};
+
+	enum quest_status{start, find_car, find_gaz, find_busket, find_colon, go_to_car, finish}quest;
 	String File;
 	Image image;
 	bool reload = true;
-	int gun = 0;
-	enum { pistol, uzi, shotgun, machinegun } weapoon;
-	bool take_uzi = false;
-	bool take_shotgun = false;
-	bool take_machinegun = false;
+	enum weapoon { pistol, uzi, shotgun, machinegun }weapoons;
 	bool take_bucket = false;
+
+	std::vector<weapoon> m_Guns = { pistol };
+	int gun = 0;
+	weapoon m_usedGun = m_Guns[0];
 
 	float damage_pistol = 10;
 	float damage_uzi = 15;
@@ -42,7 +55,8 @@ public:
 		sprite->setTexture(*texture);//заливаем спрайт текстурой
 		pos.xy.x = X; pos.xy.y = Y;//координата появления спрайта
 		sprite->setTextureRect(IntRect(8, 0, 50, int(properties.h)));  //Задаем спрайту один прямоугольник для вывода одного льва, а не кучи львов сразу. IntRect - приведение типов
-		weapoon = pistol;
+		weapoons = pistol;
+		quest = start;
 	}
 
 	void _chose_gun();

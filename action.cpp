@@ -48,10 +48,10 @@ void actionShoot(Lists & lists, Hero & hero, Shoot & shoot, Config & config, Gam
 		hero.player->reload = false;
 
 		if (hero.player->ammo > 0 || hero.player->ammo == -1) {
-			if (hero.player->weapoon != hero.player->shotgun) {
+			if (hero.player->weapoons != hero.player->shotgun) {
 				actionSingleShoot(lists, hero, shoot, config, game, pos);
 			}
-			else if(hero.player->weapoon == hero.player->shotgun){
+			else if(hero.player->weapoons == hero.player->shotgun){
 				actionShotgunShoot(lists, hero, shoot, config, game, pos);
 			}
 			actionUseAmmo(hero);
