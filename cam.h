@@ -3,7 +3,7 @@
 
 using namespace sf;
 
-void getCoord(float x, float y, View & view1)
+void getCoord(float x, float y, View & view1, Sprite & sprite)
 { 
 	float tempX = x; float tempY = y;
 
@@ -13,4 +13,5 @@ void getCoord(float x, float y, View & view1)
 	if (y > 3168 - view1.getSize().y / 2) tempY = 3168 - view1.getSize().y / 2;
 
 	view1.setCenter(tempX, tempY);
+	sprite.setPosition(tempX, tempY);
 }

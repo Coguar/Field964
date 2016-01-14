@@ -173,9 +173,11 @@ copy "C:\Users\Степан\Documents\Visual Studio 2015\SFML\bin\sfml-audio-2.d
     <ClInclude Include="classBullet.h" />
     <ClInclude Include="classCollisionChecker.h" />
     <ClInclude Include="classEnemy.h" />
+    <ClInclude Include="classEnemySpitter.h" />
     <ClInclude Include="Classes.h" />
     <ClInclude Include="classGlobal.h" />
     <ClInclude Include="classPlayer.h" />
+    <ClInclude Include="classSlime.h" />
     <ClInclude Include="classTree.h" />
     <ClInclude Include="control.h" />
     <ClInclude Include="GameMath.h" />
@@ -183,7 +185,10 @@ copy "C:\Users\Степан\Documents\Visual Studio 2015\SFML\bin\sfml-audio-2.d
     <ClInclude Include="GamesStruct.h" />
     <ClInclude Include="GoToTarget.h" />
     <ClInclude Include="health.h" />
+    <ClInclude Include="Initiation.h" />
     <ClInclude Include="level.h" />
+    <ClInclude Include="Menu.h" />
+    <ClInclude Include="MenuStruct.h" />
     <ClInclude Include="randomValue.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
@@ -198,7 +203,9 @@ copy "C:\Users\Степан\Documents\Visual Studio 2015\SFML\bin\sfml-audio-2.d
     <ClCompile Include="classBullet.cpp" />
     <ClCompile Include="classCollisionChecker.cpp" />
     <ClCompile Include="classEnemy.cpp" />
+    <ClCompile Include="classEnemySpitter.cpp" />
     <ClCompile Include="classPlayer.cpp" />
+    <ClCompile Include="classSlime.cpp" />
     <ClCompile Include="classTree.cpp" />
     <ClCompile Include="control.cpp" />
     <ClCompile Include="GameMath.cpp" />
@@ -206,7 +213,9 @@ copy "C:\Users\Степан\Documents\Visual Studio 2015\SFML\bin\sfml-audio-2.d
     <ClCompile Include="gameEvent.cpp" />
     <ClCompile Include="GoToTarget.cpp" />
     <ClCompile Include="health.cpp" />
+    <ClCompile Include="Initiation.cpp" />
     <ClCompile Include="Level.cpp" />
+    <ClCompile Include="Menu.cpp" />
     <ClCompile Include="randomValue.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

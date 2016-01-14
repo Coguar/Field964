@@ -1,5 +1,6 @@
 #pragma once
 #include "classGlobal.h"
+
 #include <vector>
 
 class Player :public Entity { // класс Игрока
@@ -7,8 +8,15 @@ public:
 	FloatRect rect;
 	Vector2f xy1;
 	float damage = 20.0;
-	float reload_time = 0.1f;
+	float reload_nonauto_time = 0.3f;
+	float reload_auto_time = 0.1f;
 	int dir = 0;
+
+	bool contact = false;
+	bool quest_move = false;
+	bool spray = false;
+	bool auto_gun;
+
 	enum direction { left, right, up, down, u_left, u_right, d_left, d_right }step_to;
 	std::map<int, direction> dir_variant = {
 		{0, left},
@@ -30,7 +38,6 @@ public:
 
 	std::vector<weapoon> m_Guns = { pistol };
 	int gun = 0;
-	weapoon m_usedGun = m_Guns[0];
 
 	float damage_pistol = 10;
 	float damage_uzi = 15;
@@ -45,11 +52,12 @@ public:
 
 	int choose_gun = 1;
 
-	Player(String F, String Name, float X, float Y, float W, float H, int health_point) :Entity(image, Name, X, Y, W, H) {  //Конструктор с параметрами(формальными) для класса Player. При создании объекта класса мы будем задавать имя файла, координату Х и У, ширину и высоту
+	Player(String F, String Name, float X, float Y, float W, float H, int health_point) :Entity(Name, X, Y, W, H) {  //Конструктор с параметрами(формальными) для класса Player. При создании объекта класса мы будем задавать имя файла, координату Х и У, ширину и высоту
 
 		properties.health = health_point;
 		File = F;//имя файла+расширение
 		properties.w = W; properties.h = H;//высота и ширина
+		properties.isGoing = false;
 		image.loadFromFile(File);//запихиваем в image наше изображение вместо File мы передадим то, что пропишем при создании объекта. В нашем случае "hero.png" и получится запись идентичная 	image.loadFromFile("images/hero/png");
 		texture->loadFromImage(image);//закидываем наше изображение в текстуру
 		sprite->setTexture(*texture);//заливаем спрайт текстурой
@@ -66,7 +74,11 @@ public:
 
 	void _set_speed();
 
-	void update(float time, CollisionChecker & checker);
+	void _do_sound(sf::Sound & sound);
+
+	void _steps(sf::Sound & sound);
+
+	void update(float time, CollisionChecker & checker, sf::Sound & sound, sf::Sound & dead_sound);
 
 	FloatRect getRect();
 
@@ -75,10 +87,6 @@ public:
 	float getX();
 	float getY();
 
-
-
-	bool _map_event(float y1, float x1);
-
-	void _quest_progress(float y1, float x1);
+	void _quest_progress(CollisionChecker & checker);
 
 };

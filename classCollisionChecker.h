@@ -11,4 +11,6 @@ public:
 	}
 
 	bool map_event(FloatRect & rect);
+
+	bool quest_event(FloatRect & rect, std::string name);
 };

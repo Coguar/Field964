@@ -6,6 +6,7 @@
 #pragma once
 
 #include "targetver.h"
+#include "SFML\Audio.hpp"
 
 #include <stdio.h>
 #include <tchar.h>

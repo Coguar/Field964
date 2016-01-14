@@ -1,30 +1,46 @@
 #include "stdafx.h"
 #include "classEnemy.h"
 
-void Enemy::update(float time, CollisionChecker & checker) {
+void Enemy::_check_spit(float time, float p_pos_x, float p_pos_y) {
+	recovery_spittle += time;
+	if (recovery_spittle >= recovery_time) {
+		recovery_spittle = 0;
+		shooting = true;
+	}
+}
+
+void Enemy::_is_hit(float time) {
+	if (hit == false) {
+		hit_timer += time;
+	}
+	if (hit_timer >= hit_time) {
+		hit = true;
+		hit_timer = 0;
+	}
+}
+
+void Enemy::update(float time, CollisionChecker & checker, float p_pos_x, float p_pos_y) {
+	_is_hit(time);
 	xy1 = pos.xy;
 	if (properties.health <= 0) {
 		properties.life = false;
 	}
 	if (properties.life == true) {
-
-		xy1.x += Xdir * time;
-		if (checker.map_event(getRect1()) == false && player_contact == false ) {
+		if (Name == "spitter") {
+			_check_spit(time, p_pos_x, p_pos_y);
+		}
+		xy1.x += dir.x * time * properties.speed;
+		if (checker.map_event(getRect1()) == false && player_contact == false) {
 			pos.xy.x = xy1.x;
 		}
-		xy1.y += Ydir * time;
-		if (checker.map_event(getRect1()) == false && player_contact == false ) {
+		xy1.y += dir.y * time * properties.speed;
+		if (checker.map_event(getRect1()) == false && player_contact == false) {
 			pos.xy.y = xy1.y;
 		}
 
-		if (player_contact == true) {
-			sprite->setColor(Color::Red);
+		if (angry) {
+			sprite->setPosition(pos.xy.x, pos.xy.y);
 		}
-		else {
-			sprite->setColor(Color::White);
-		}
-
-		sprite->setPosition(pos.xy.x, pos.xy.y);
 	}
 }
 

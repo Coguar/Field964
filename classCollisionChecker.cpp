@@ -12,3 +12,15 @@ bool CollisionChecker::map_event(FloatRect & rect) {
 		}
 	return wall;
 }
+
+bool CollisionChecker::quest_event(FloatRect & rect, std::string name) {
+	bool wall = false;
+	for (size_t i = 0; i < obj.size(); i++)//проходимся по объектам
+		if (rect.intersects(obj[i].rect))//проверяем пересечение игрока с объектом
+		{
+			if (obj[i].name == name) {
+				wall = true;
+			}
+		}
+	return wall;
+}
