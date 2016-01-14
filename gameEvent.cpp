@@ -303,7 +303,37 @@ void eventGetEnemys(Config & config, Lists & lists, Game1 & game, Monster & enem
 		lists.entities.push_back(std::make_shared<Enemy>(name, e[i].rect.left, e[i].rect.top, enemy.boss_W, enemy.boss_H, "boss"));
 		enemy.boss.reset();
 	}
+}
 
+void eventPushLists(Config & config, Lists & lists, Game1 & game, Monster & enemy) 
+{
+	eventGetEnemys(config, lists, game, enemy);
+	eventGetTrees(config, lists, game);
+	eventGetGuns(config, lists, game);
+}
 
+void eventAgroZombie(Hero & hero, Lists & lists, Game1 & game) 
+{
+	if (calculateDistantion(hero.player->getX(), hero.player->getY(), (*lists.enemy)->pos.xy.x, (*lists.enemy)->pos.xy.y) <= 500 && !(*lists.enemy)->angry) {
+		game.sound->z_attack.play();
+		(*lists.enemy)->angry = true;
+	}
+}
 
+void eventTheyFollowYou(Game1 & game, Config & config,Shoot & shoot ,Hero & hero, Lists & lists) {
+	for (lists.enemy = lists.entities.begin(); lists.enemy != lists.entities.end(); lists.enemy++) {
+		if ((*lists.enemy)->angry) {
+			gototarget((*lists.enemy)->dir.x, (*lists.enemy)->dir.y, hero.player->getX(), hero.player->getY(), (*lists.enemy)->getX(), (*lists.enemy)->getY());
+		}
+		if ((*lists.enemy)->Name != "box") {
+			(*lists.enemy)->sprite->setRotation(actionGetRotation(hero.player->pos.xy.x, hero.player->pos.xy.y, (*lists.enemy)->pos.xy.x, (*lists.enemy)->pos.xy.y) + 90);
+		}
+
+		eventAgroZombie(hero, lists, game);
+
+		eventZombieHustle(lists, hero);
+		eventHitZombie(lists, hero, game.sound->z_pain);
+		actionSlowMotion(game, game.time);
+		eventZombieAtack(lists, hero, config, shoot, *game.sound);
+	}
 }

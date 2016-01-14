@@ -57,7 +57,7 @@ void SoundInit(Config & config, Game1 & game) {
 
 	game.sound->win_buffer.loadFromFile(config.win_sound);
 	game.sound->win.setBuffer(game.sound->win_buffer);
-	game.sound->win.setVolume(10);
+	//game.sound->win.setVolume(10);
 
 	game.sound->z_dead_buffer.loadFromFile(config.z_dead);
 	game.sound->z_dead.setBuffer(game.sound->z_dead_buffer);
@@ -86,8 +86,19 @@ void GameInit(Config & config, Game1 & game, Hero & hero)
 	game.is_end = false;
 
 	game.window = std::make_shared<RenderWindow>(sf::VideoMode(800, 600), "Game");
+	game.window->setMouseCursorVisible(false);
 	game.lvl = std::make_shared<Level>();
 	game.lvl->LoadFromFile(config.map);
+
+	Image icon;
+	icon.loadFromFile(config.icon);
+	game.window->setIcon(icon.getSize().x, icon.getSize().y, icon.getPixelsPtr());
+
+	game.aim_texture = std::make_shared<Texture>();
+	game.aim_texture->loadFromFile(config.aim);
+	game.aim_sprite = std::make_shared<Sprite>();
+	game.aim_sprite->setTexture(*game.aim_texture);
+	game.aim_sprite->setOrigin(game.aim_texture->getSize().x / 2, game.aim_texture->getSize().y / 2);
 
 	game.sound = std::make_shared<sounds>();
 	SoundInit(config, game);

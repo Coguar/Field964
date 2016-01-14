@@ -27,3 +27,9 @@ void eventGetTrees(Config & config, Lists & lists, Game1 & game);
 void eventGetGuns(Config & config, Lists & lists, Game1 & game);
 
 void eventGetEnemys(Config & config, Lists & lists, Game1 & game, Monster & enemy);
+
+void eventPushLists(Config & config, Lists & lists, Game1 & game, Monster & enemy);
+
+void eventAgroZombie(Hero & hero, Lists & lists, Game1 & game);
+
+void eventTheyFollowYou(Game1 & game, Config & config, Shoot & shoot, Hero & hero, Lists & lists);

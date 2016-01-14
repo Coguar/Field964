@@ -58,25 +58,24 @@ void Player::_steps(sf::Sound & sound) {
 	}
 }
 
-void Player::update(float time, CollisionChecker & checker, sf::Sound & sound, sf::Sound & dead_sound) {
+void Player::_is_die(sf::Sound & sound) {
+	if (properties.health <= 0) {
+		if (properties.life) {
+			sound.play();
+		}
+		properties.life = false;
+	}
+}
+
+void Player::update(float time, CollisionChecker & checker, sf::Sound & sound, sf::Sound & dead_sound, sf::Sound & win_sound) {
+
 	xy1 = pos.xy;
 	_steps(sound);
-
-	/*if (properties.speed != 0 && !properties.isGoing) {
-		sound.play();
-		properties.isGoing = true;
-
-	}
-	else {
-		sound.pause();
-		properties.isGoing = false;
-
-	}*/
 
 	_chose_gun();
 	_take_gun();
 	_set_speed();
-	_quest_progress(checker);
+	_quest_progress(checker, win_sound);
 	xy1.x += pos.dxy.x * time;
 	xy1.y += pos.dxy.y * time;
 
@@ -87,12 +86,7 @@ void Player::update(float time, CollisionChecker & checker, sf::Sound & sound, s
 
 	properties.speed = 0;
 
-	if (properties.health <= 0) {
-		if(properties.life){
-			dead_sound.play();
-		}
-		properties.life = false;
-	}
+	_is_die(dead_sound);
 
 	if (properties.life == false) {
 		properties.health = 0;
@@ -117,7 +111,7 @@ float Player::getY() {
 }
 
 
-void Player::_quest_progress(CollisionChecker & checker) {
+void Player::_quest_progress(CollisionChecker & checker, sf::Sound & win_sound) {
 	if (checker.quest_event(getRect1(), "car") && quest == start) {
 		quest = find_car;
 		quest_move = true;
@@ -138,10 +132,9 @@ void Player::_quest_progress(CollisionChecker & checker) {
 	}
 	else if (checker.quest_event(getRect(), "car") && quest == go_to_car) {
 		quest = finish;
-		quest_move = true;
+		win_sound.play();
 	}
 	if (quest == find_gaz && take_bucket == true) {
 		quest = find_busket;
-		quest_move = true;
 	}
 }

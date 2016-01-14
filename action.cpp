@@ -49,41 +49,52 @@ void _gun_sound(Game1 & game, Hero & hero) {
 	}
 }
 
-void actionShoot(Lists & lists, Hero & hero, Shoot & shoot, Config & config, Game1 & game, float reload_time, Vector2f & pos) {
-	
-	float r_time;
-
+float _gun_reload_time(Hero & hero) 
+{
 	if (hero.player->spray) {
-		r_time = hero.player->reload_auto_time;
+		return hero.player->reload_auto_time;
+	}
+	else 
+	{
+		return hero.player->reload_nonauto_time;
+	}
+}
+
+void _make_shot(Hero & hero, Lists & lists, Game1 & game, Shoot & shoot, Config & config, Vector2f & pos) {
+	if (hero.player->ammo > 0 || hero.player->ammo == -1)
+	{
+		if (hero.player->weapoons != hero.player->shotgun)
+		{
+			actionSingleShoot(lists, hero, shoot, config, game, pos);
+
+		}
+		else if (hero.player->weapoons == hero.player->shotgun)
+		{
+			actionShotgunShoot(lists, hero, shoot, config, game, pos);
+		}
+		_gun_sound(game, hero);
+		actionUseAmmo(hero);
 	}
 	else {
-		r_time = hero.player->reload_nonauto_time;
-	}
+		game.sound->cock.play();
 
-	if (reload_time >= r_time) {
+	}
+}
+
+void actionShoot(Lists & lists, Hero & hero, Shoot & shoot, Config & config, Game1 & game, float reload_time, Vector2f & pos) 
+{
+	
+	float r_time = _gun_reload_time(hero);
+
+	if (reload_time >= r_time) 
+	{
 		hero.player->reload = true;
 	}
-	if (hero.player->reload == true) {
+	if (hero.player->reload == true) 
+	{
 		game.reload_clock.restart();
 		hero.player->reload = false;
-
-		if (hero.player->ammo > 0 || hero.player->ammo == -1) {
-			if (hero.player->weapoons != hero.player->shotgun) {
-				actionSingleShoot(lists, hero, shoot, config, game, pos);
-				//game.sound->shoot.play();
-
-			}
-			else if(hero.player->weapoons == hero.player->shotgun){
-				actionShotgunShoot(lists, hero, shoot, config, game, pos);
-				//game.sound->shootgun.play();
-			}
-			_gun_sound(game, hero);
-			actionUseAmmo(hero);
-		}
-		else {
-			game.sound->cock.play();
-
-		}
+		_make_shot(hero, lists, game, shoot, config, pos);
 
 	}
 }
@@ -91,7 +102,7 @@ void actionShoot(Lists & lists, Hero & hero, Shoot & shoot, Config & config, Gam
 void actionSlowMotion(Game1 & game, float time) {
 	if (game.speed_game != 1) {
 		game.timer += time;
-		if (game.timer >= 500) {
+		if (game.timer >= game.EFFECT_TIME) {
 			game.timer = 0;
 			game.speed_game = 1;
 		}

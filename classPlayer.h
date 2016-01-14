@@ -74,11 +74,11 @@ public:
 
 	void _set_speed();
 
-	void _do_sound(sf::Sound & sound);
-
 	void _steps(sf::Sound & sound);
 
-	void update(float time, CollisionChecker & checker, sf::Sound & sound, sf::Sound & dead_sound);
+	void _is_die(sf::Sound & sound);
+
+	void update(float time, CollisionChecker & checker, sf::Sound & sound, sf::Sound & dead_sound, sf::Sound & win_sound);
 
 	FloatRect getRect();
 
@@ -87,6 +87,6 @@ public:
 	float getX();
 	float getY();
 
-	void _quest_progress(CollisionChecker & checker);
+	void _quest_progress(CollisionChecker & checker, sf::Sound & win_sound);
 
 };

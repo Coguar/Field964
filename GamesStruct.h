@@ -6,13 +6,14 @@
 
 
 struct Config {
+	std::string icon = "./files/img/icon.png";
 	std::string imageHeroPistol = "./files/sprites/player_pistol.png";
 	std::string imageHeroUzi = "./files/sprites/player_uzi.png";
 	std::string imageHeroShotgun = "./files/sprites/player_shotgun.png";
 	std::string imageHeroMachinegun = "./files/sprites/player_machinegun.png";
-
+	
 	std::string imageHeroWarrior = "./files/img/heroWar.png";
-
+	std::string aim = "./files/sprites/aim.png";
 	std::vector<std::string> bloods{
 		"./files/img/blood1.png",
 		"./files/img/blood2.png",
@@ -145,6 +146,9 @@ struct Game1
 	std::shared_ptr<sf::Texture> finish_texture;
 	std::shared_ptr<sf::Sprite> finish_sprite;
 
+	std::shared_ptr<sf::Texture> aim_texture;
+	std::shared_ptr<sf::Sprite> aim_sprite;
+
 	Clock clock;
 	Clock reload_clock;
 
@@ -156,6 +160,7 @@ struct Game1
 
 	sf::Event event;
 
+	const float EFFECT_TIME = 5000;
 	float timer = 0;
 	float speed_game = 1;
 
